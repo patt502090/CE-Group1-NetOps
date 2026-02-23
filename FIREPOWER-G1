@@ -1,0 +1,375 @@
+: Saved
+
+: 
+: Serial Number: JAD23051J44
+: Hardware:   FPR-2110, 6572 MB RAM, CPU MIPS 1200 MHz, 1 CPU (6 cores)
+:
+NGFW Version 7.4.2 
+!
+hostname FIREPOWER-G1
+enable password ***** encrypted
+strong-encryption-disable
+service-module 0 keepalive-timeout 4
+service-module 0 keepalive-counter 6
+names
+no mac-address auto
+
+
+
+!
+interface Port-channel1
+ nameif inside-lag
+ security-level 0
+ no ip address
+!
+interface Port-channel1.1
+ vlan 1
+ nameif inside
+ security-level 0
+ ip address 10.1.1.2 255.255.255.252 
+!
+interface Port-channel1.20
+ shutdown
+ vlan 20
+ nameif user
+ security-level 0
+ ip address 10.1.20.1 255.255.255.0 
+!
+interface Port-channel1.40
+ vlan 40
+ nameif guest
+ security-level 0
+ ip address 10.1.40.1 255.255.255.0 
+!
+interface Port-channel1.100
+ vlan 100
+ nameif dmz
+ security-level 0
+ ip address 10.1.100.1 255.255.255.0 
+!
+interface Ethernet1/4
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/5
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/6
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/7
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/8
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/9
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/10
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/11
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/12
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/13
+ nameif outside
+ security-level 0
+ ip address 10.0.1.2 255.255.255.252 
+!
+interface Ethernet1/14
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/15
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/16
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Management1/1
+ management-only
+ nameif management
+ cts manual
+  propagate sgt preserve-untag
+  policy static sgt disabled trusted
+ security-level 0
+!
+ftp mode passive
+ngips conn-match vlan-id
+dns domain-lookup any
+dns server-group CiscoUmbrellaDNSServerGroup
+ name-server 208.67.222.222 
+ name-server 208.67.220.220 
+ name-server 2620:119:35::35 
+dns server-group CustomDNSServerGroup
+ name-server 172.30.0.4 
+ name-server 8.8.8.8 
+dns-group CiscoUmbrellaDNSServerGroup
+no object-group-search access-control
+object network any-ipv6
+ subnet ::/0
+object network IPv4-Private-10.0.0.0-8
+ subnet 10.0.0.0 255.0.0.0
+object network IPv4-Private-172.16.0.0-12
+ subnet 172.16.0.0 255.240.0.0
+object network IPv4-Private-192.168.0.0-16
+ subnet 192.168.0.0 255.255.0.0
+object network inside-lan
+ subnet 10.1.0.0 255.255.0.0
+object network any-ipv4
+ subnet 0.0.0.0 0.0.0.0
+object network Inter-link-L3-FW
+ subnet 10.255.255.0 255.255.255.252
+object network |10.1.1.1
+ host 10.1.1.1
+object network |10.0.1.1
+ host 10.0.1.1
+object network MacMini_Honeypot
+ host 10.1.100.10
+object network |10.0.1.2
+ host 10.0.1.2
+object network DMZ-LAN
+ subnet 10.1.100.0 255.255.255.0
+object network DMZ-Network
+ subnet 10.1.100.0 255.255.255.0
+object network SNMP_Server
+ host 172.31.0.102
+object network SNMP_server_01
+ host 172.31.0.102
+object network Guest-Network
+ subnet 10.1.40.0 255.255.255.0
+object network Server-LAN
+ subnet 10.1.10.0 255.255.255.0
+object network user-lan
+ subnet 10.1.20.0 255.255.255.0
+object network MGMT-Network
+ subnet 10.1.50.0 255.255.255.0
+object network |172.31.0.102
+ host 172.31.0.102
+object-group network IPv4-Private-All-RFC1918
+ network-object object IPv4-Private-10.0.0.0-8
+ network-object object IPv4-Private-172.16.0.0-12
+ network-object object IPv4-Private-192.168.0.0-16
+object-group service |acSvcg-268435461
+ service-object icmp 
+ service-object tcp destination eq ssh 
+ service-object udp destination eq snmp 
+object-group service |acSvcg-268435460
+ service-object tcp destination eq www 
+ service-object tcp destination eq https 
+object-group network |acDestNwg-268435460
+ network-object object DMZ-Network
+ network-object object MacMini_Honeypot
+object-group service |acSvcg-268435468
+ service-object ip 
+object-group service |acSvcg-268435467
+ service-object ip 
+object-group service |acSvcg-268435469
+ service-object ip 
+object-group service |acSvcg-268435459
+ service-object ip 
+access-group NGFW_ONBOX_ACL global
+access-list NGFW_ONBOX_ACL remark rule-id 268435461: ACCESS POLICY: NGFW_Access_Policy
+access-list NGFW_ONBOX_ACL remark rule-id 268435461: L5 RULE: Allow-Prime-SNMP
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435461 ifc outside object SNMP_Server ifc inside object inside-lan rule-id 268435461 event-log both 
+access-list NGFW_ONBOX_ACL remark rule-id 268435460: ACCESS POLICY: NGFW_Access_Policy
+access-list NGFW_ONBOX_ACL remark rule-id 268435460: L5 RULE: Allow_Outside_to_DMZ
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435460 ifc outside any ifc dmz object-group |acDestNwg-268435460 rule-id 268435460 event-log both 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435460 ifc user any ifc dmz object-group |acDestNwg-268435460 rule-id 268435460 event-log both 
+access-list NGFW_ONBOX_ACL remark rule-id 268435468: ACCESS POLICY: NGFW_Access_Policy
+access-list NGFW_ONBOX_ACL remark rule-id 268435468: L5 RULE: Allow-DMZ-to-Server-App
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435468 ifc dmz any ifc inside object Server-LAN rule-id 268435468 
+access-list NGFW_ONBOX_ACL remark rule-id 268435467: ACCESS POLICY: NGFW_Access_Policy
+access-list NGFW_ONBOX_ACL remark rule-id 268435467: L5 RULE: Allow_Inside_to_DMZ
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435467 ifc inside any ifc dmz any rule-id 268435467 event-log flow-end 
+access-list NGFW_ONBOX_ACL remark rule-id 268435469: ACCESS POLICY: NGFW_Access_Policy
+access-list NGFW_ONBOX_ACL remark rule-id 268435469: L5 RULE: Allow-All-for-MGMT
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435469 ifc inside object MGMT-Network any rule-id 268435469 
+access-list NGFW_ONBOX_ACL remark rule-id 268435459: ACCESS POLICY: NGFW_Access_Policy
+access-list NGFW_ONBOX_ACL remark rule-id 268435459: L5 RULE: ALLOW-INTERNET
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc dmz any ifc outside any rule-id 268435459 event-log both 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc guest any ifc outside any rule-id 268435459 event-log both 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc inside any ifc outside any rule-id 268435459 event-log both 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc user any ifc outside any rule-id 268435459 event-log both 
+access-list NGFW_ONBOX_ACL remark rule-id 1: ACCESS POLICY: NGFW_Access_Policy
+access-list NGFW_ONBOX_ACL remark rule-id 1: L5 RULE: DefaultActionRule
+access-list NGFW_ONBOX_ACL advanced deny ip any any rule-id 1 event-log both 
+pager lines 24
+logging enable
+logging timestamp
+logging permit-hostdown
+mtu inside-lag 1500
+mtu inside 1500
+mtu user 1500
+mtu guest 1500
+mtu dmz 1500
+mtu outside 1500
+mtu management 1500
+no failover
+failover replication http
+monitor-interface inside
+monitor-interface user
+monitor-interface guest
+monitor-interface dmz
+no monitor-interface service-module 
+icmp unreachable rate-limit 1 burst-size 1
+no asdm history enable
+arp timeout 14400
+no arp permit-nonconnected
+arp rate-limit 32768
+management-interface convergence
+nat (inside,outside) source static inside-lan inside-lan destination static SNMP_Server SNMP_Server
+!
+object network inside-lan
+ nat (inside,outside) dynamic interface
+object network DMZ-LAN
+ nat (dmz,outside) dynamic interface
+object network Guest-Network
+ nat (guest,outside) dynamic interface
+object network user-lan
+ nat (user,outside) dynamic interface
+
+route outside 0.0.0.0 0.0.0.0 10.0.1.1 1
+route inside 10.1.0.0 255.255.0.0 10.1.1.1 1
+timeout xlate 3:00:00
+timeout pat-xlate 0:00:30
+timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 sctp 0:02:00 icmp 0:00:02
+timeout sunrpc 0:10:00 h323 0:05:00 h225 1:00:00 mgcp 0:05:00 mgcp-pat 0:05:00
+timeout sip 0:30:00 sip_media 0:02:00 sip-invite 0:03:00 sip-disconnect 0:02:00
+timeout sip-provisional-media 0:02:00 uauth 0:05:00 absolute
+timeout tcp-proxy-reassembly 0:01:00
+timeout floating-conn 0:00:00
+timeout conn-holddown 0:00:15
+timeout igp stale-route 0:01:10
+user-identity default-domain LOCAL
+aaa authentication login-history
+http server enable
+ip-client inside-lag
+ip-client inside-lag ipv6
+ip-client management
+ip-client management ipv6
+ip-client outside
+ip-client outside ipv6
+ip-client dmz
+ip-client dmz ipv6
+ip-client inside
+ip-client inside ipv6
+ip-client guest
+ip-client guest ipv6
+ip-client user
+ip-client user ipv6
+snmp-server group AUTH v3 auth 
+snmp-server group PRIV v3 priv 
+snmp-server group NOAUTH v3 noauth 
+snmp-server user AdminG1 PRIV v3 engineID 80000009fe5e78396ec16b8f02f9112cb973c2619be35dc012 encrypted auth sha cb:2f:1c:e1:82:c3:75:f3:5d:b5:88:e5:97:62:47:2f:7e:71:92:01 priv aes 128 05:9b:ab:c5:5d:95:51:5d:cf:a4:2f:07:12:c2:e5:e1 
+snmp-server user-list G1_ADMIN_GRP username AdminG1
+snmp-server host management 172.31.0.102 version 3 AdminG1
+snmp-server location null
+snmp-server contact null
+snmp-server community *****
+sysopt connection tcpmss 0
+no sysopt connection permit-vpn
+crypto ipsec security-association pmtu-aging infinite
+crypto ca permit-weak-crypto
+crypto ca trustpool policy
+telnet timeout 10
+console timeout 0
+dhcprelay timeout 60
+threat-detection basic-threat
+threat-detection statistics access-list
+no threat-detection statistics tcp-intercept
+ssl server-version tlsv1.2 dtlsv1.2
+group-policy DfltGrpPolicy attributes
+ vpn-tunnel-protocol ssl-client 
+ webvpn
+  anyconnect ssl dtls none
+dynamic-access-policy-record DfltAccessPolicy
+!
+class-map inspection_default
+ match default-inspection-traffic
+class-map class_snmp
+ match port udp eq 4161
+!
+!
+policy-map type inspect dns preset_dns_map
+ parameters
+  message-length maximum client auto
+  message-length maximum 512
+  no tcp-inspection
+policy-map global_policy
+ class inspection_default
+  inspect dns preset_dns_map 
+  inspect ftp 
+  inspect h323 h225 
+  inspect h323 ras 
+  inspect rsh 
+  inspect rtsp 
+  inspect sqlnet 
+  inspect skinny 
+  inspect sunrpc 
+  inspect sip  
+  inspect netbios 
+  inspect tftp 
+  inspect ip-options 
+  inspect icmp 
+  inspect icmp error 
+  inspect xdmcp 
+ class class_snmp
+  inspect snmp 
+!
+service-policy global_policy global
+prompt hostname context 
+call-home
+ profile CiscoTAC-1
+  no active
+  destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+  destination address email callhome@cisco.com
+  destination transport-method http
+  subscribe-to-alert-group diagnostic
+  subscribe-to-alert-group environment
+  subscribe-to-alert-group inventory periodic monthly
+  subscribe-to-alert-group configuration periodic monthly
+  subscribe-to-alert-group telemetry periodic daily
+snort preserve-connection
+snort multichannel-lb enable
+no dp-tcp-proxy
+Cryptochecksum:88882720f36982f308cb2bfa1b93924c
+: end
