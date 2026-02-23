@@ -1,13 +1,24 @@
-# 🚀 Network Configuration Backup System
+# 🚀 Enterprise-Grade Network Configuration Management Stack
 
-ระบบสำรองข้อมูลการตั้งค่าอุปกรณ์เครือข่ายอัตโนมัติ พัฒนาบน **Raspberry Pi** โดยใช้ **Oxidized**
+ระบบบริหารจัดการคอนฟิกเครือข่ายอัตโนมัติ ออกแบบตามหลักความปลอดภัยระดับสูง (Security-Hardened Architecture)
 
-### 🛠 อุปกรณ์ในระบบ
-* **Core & Access Sw:** Cisco L3/L2 Switches
-* **Wireless:** Cisco WLC (AireOS)
-* **Firewall:** Cisco Firepower 2110 (FTD) - *ใช้ Custom Ruby Model*
+### 🏗️ Technology Stack (The Core)
+* **Fetcher Engine:** Oxidized (Ruby-based) [cite: 2026-02-23]
+* **Environment:** Hardened Debian 12 on Raspberry Pi infrastructure [cite: 2026-02-23]
+* **Version Control:** Git with localized differential tracking [cite: 2026-02-23]
+* **Remote Sync:** Secure GitHub Private Repository via Personal Access Token
+* **Service Control:** Managed via Systemd for 24/7 high availability [cite: 2026-02-23]
 
-### ⚙️ คุณสมบัติระบบ
-* **Auto-Sync:** ดึงคอนฟิกทุก 3 ชั่วโมง (ช่วง 08:00 - 00:00 น.)
-* **Version Control:** เก็บประวัติการแก้ไขผ่าน Git
-* **Cloud Backup:** สำรองข้อมูลขึ้น GitHub Private อัตโนมัติLast update: Mon 23 Feb 21:45:05 +07 2026
+### ⚙️ Automation & Security Logic
+* **Interval Polling:** ทุก 10,800 วินาที (3 ชั่วโมง) [cite: 2026-02-23]
+* **Operational Window:** 08:00 - 23:59 (UTC+7) [cite: 2026-02-23]
+* **Custom Driver Implementation:** `myftd.rb` - พัฒนาขึ้นพิเศษเพื่อจัดการ Regex สำหรับ SSH Prompt ของ Cisco Firepower 2110 [cite: 2026-02-23]
+* **Security Design:** หน้า Dashboard (Port 8081) ถูกจำกัดการเข้าถึงเฉพาะภายในวงเครือข่ายที่กำหนด (Restricted Access) เพื่อป้องกันการรั่วไหลของข้อมูลโครงสร้างพื้นฐาน [cite: 2026-02-23]
+
+### 📊 Network Node Inventory
+| Hostname | Type | Driver | Sync Status |
+| :--- | :--- | :--- | :--- |
+| **L3_SW_G1** | Core Switch | `ios` | ✅ Online |
+| **L2_SW_G1** | Access Switch | `ios` | ✅ Online |
+| **WLC** | Wireless Ctrl | `aireos` | ✅ Online |
+| **FIREPOWER-G1** | Firewall | `myftd` | ✅ Online |
