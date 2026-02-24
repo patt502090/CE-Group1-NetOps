@@ -19,10 +19,10 @@
 ! VTP: --------------
 ! VTP: VTP Operating Mode                : Server
 ! VTP: Maximum VLANs supported locally   : 255
-! VTP: Number of existing VLANs          : 10
-! VTP: Configuration Revision            : 18
-! VTP: MD5 digest                        : 0xEB 0xF6 0x4D 0xB1 0x6B 0xB7 0x8E 0x9A 
-! VTP:                                     0x78 0x8A 0x5B 0x91 0x65 0xDA 0xE1 0x2F 
+! VTP: Number of existing VLANs          : 12
+! VTP: Configuration Revision            : 20
+! VTP: MD5 digest                        : 0x40 0xC0 0x94 0x9E 0x55 0xE6 0x98 0x1F 
+! VTP:                                     0x98 0xCA 0x09 0xDE 0x7D 0x8E 0xC9 0x9F 
 ! 
 ! NAME: "1", DESCR: "WS-C3750X-48P"
 ! PID: WS-C3750X-48PF-L  , VID: V06  , SN: FDO1813R0HJ
@@ -35,7 +35,7 @@
 ! 
 ! 
 !
-! Last configuration change at 20:35:14 UTC Tue Jan 3 2006 by admin
+! Last configuration change at 21:48:07 UTC Tue Jan 3 2006 by admin
 !
 version 15.2
 no service pad
