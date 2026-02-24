@@ -480,6 +480,7 @@ wlan profiling radius dhcp disable 1
 wlan profiling radius http disable 1
 wlan profiling radius dhcp disable 2
 wlan profiling radius http disable 2
+ap hotspot venue type 0 0 AP002C.C8DE.06E8
 wlan enable 1
 wlan enable 2
 license boot base
