@@ -255,8 +255,11 @@ qos max-dscp bronze 10
 qos max-dscp silver 0
 qos max-dscp gold 34
 qos max-dscp platinum 46
+radius auth add 1 10.1.10.10 1812 ascii ****
 radius callStationIdType macaddr
 radius auth callStationIdType ap-macaddr-ssid
+radius auth retransmit-timeout 1 5
+radius auth mgmt-retransmit-timeout 1 5
 radius fallback-test mode passive
 radius fallback-test username cisco-probe
 radius fallback-test interval 300
@@ -459,6 +462,7 @@ wlan wgb broadcast-tagging disable 2
 wlan wgb prp disable 1
 wlan wgb prp disable 2
 wlan security wpa disable 2
+wlan radius_server auth add 1 1
 wlan security splash-page-web-redir disable 1
 wlan security splash-page-web-redir disable 2
 wlan security web-auth enable 2
@@ -480,6 +484,7 @@ wlan profiling radius dhcp disable 1
 wlan profiling radius http disable 1
 wlan profiling radius dhcp disable 2
 wlan profiling radius http disable 2
+ap hotspot venue type 0 0 AP002C.C8DE.06E8
 wlan enable 1
 wlan enable 2
 license boot base
