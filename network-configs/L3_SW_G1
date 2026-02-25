@@ -21,9 +21,9 @@
 ! VTP: VTP Operating Mode                : Server
 ! VTP: Maximum VLANs supported locally   : 1005
 ! VTP: Number of existing VLANs          : 12
-! VTP: Configuration Revision            : 21
-! VTP: MD5 digest                        : 0x90 0x3C 0xD2 0x08 0xAB 0xD6 0x77 0x38 
-! VTP:                                     0x5E 0x6D 0x0A 0xCF 0x33 0x21 0x05 0x9E 
+! VTP: Configuration Revision            : 22
+! VTP: MD5 digest                        : 0x23 0x1B 0x54 0x52 0x21 0x55 0x7E 0x71 
+! VTP:                                     0x44 0xAB 0x52 0x69 0xD3 0x4C 0xBE 0x5C 
 ! 
 ! NAME: "c92xxL Stack", DESCR: "c92xxL Stack"
 ! PID: C9200L-48T-4G     , VID: V02  , SN: FOC273609EN
@@ -36,7 +36,7 @@
 ! 
 ! 
 !
-! Last configuration change at 08:32:08 UTC Tue Feb 24 2026 by admin
+! Last configuration change at 14:43:21 UTC Wed Feb 25 2026 by admin
 !
 version 17.9
 service timestamps debug datetime msec
@@ -69,11 +69,7 @@ ip routing
 ip domain name group1.com
 ip dhcp excluded-address 10.1.50.1 10.1.50.50
 ip dhcp excluded-address 10.1.10.20
-!
-ip dhcp pool USER
- network 10.1.20.0 255.255.255.0
- default-router 10.1.20.1 
- dns-server 172.30.0.4 
+ip dhcp excluded-address 10.1.20.1 10.1.20.10
 !
 ip dhcp pool STAFF
  network 10.1.30.0 255.255.255.0
@@ -95,6 +91,11 @@ ip dhcp pool RPI_20_FIXED
  client-identifier 01d8.3add.433f.a7
  default-router 10.1.10.1 
  dns-server 192.100.77.10 172.30.0.4 
+!
+ip dhcp pool EMPLOYEE
+ network 10.1.20.0 255.255.255.0
+ default-router 10.1.20.1 
+ dns-server 172.30.0.4 192.100.77.10 
 !
 !
 !
@@ -548,6 +549,7 @@ logging host 10.1.10.20 transport udp port 1514
 logging host 10.1.10.10 transport udp port 1514
 logging host 10.1.10.1
 logging host 10.1.10.10
+logging host 172.31.0.102
 !
 snmp-server group G1_ADMIN_GRP v3 priv read ALL write ALL notify ALL 
 snmp-server group G1_ADMIN_GRP v3 priv context G1_L3_SW_DEVICE_CTX notify ALL 
