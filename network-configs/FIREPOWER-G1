@@ -47,6 +47,21 @@ interface Port-channel1.100
  security-level 0
  ip address 10.1.100.1 255.255.255.0 
 !
+interface Ethernet1/1
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/2
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/3
+ no nameif
+ no security-level
+ no ip address
+!
 interface Ethernet1/4
  shutdown
  no nameif
@@ -160,28 +175,28 @@ object network Inter-link-L3-FW
  subnet 10.255.255.0 255.255.255.252
 object network |10.1.1.1
  host 10.1.1.1
-object network |10.0.1.1
- host 10.0.1.1
-object network MacMini_Honeypot
- host 10.1.100.10
-object network |10.0.1.2
- host 10.0.1.2
 object network DMZ-LAN
  subnet 10.1.100.0 255.255.255.0
-object network DMZ-Network
- subnet 10.1.100.0 255.255.255.0
-object network SNMP_Server
- host 172.31.0.102
 object network SNMP_server_01
  host 172.31.0.102
-object network Guest-Network
- subnet 10.1.40.0 255.255.255.0
-object network Server-LAN
- subnet 10.1.10.0 255.255.255.0
-object network user-lan
- subnet 10.1.20.0 255.255.255.0
+object network |10.0.1.1
+ host 10.0.1.1
 object network MGMT-Network
  subnet 10.1.50.0 255.255.255.0
+object network MacMini_Honeypot
+ host 10.1.100.10
+object network Server-LAN
+ subnet 10.1.10.0 255.255.255.0
+object network DMZ-Network
+ subnet 10.1.100.0 255.255.255.0
+object network |10.0.1.2
+ host 10.0.1.2
+object network SNMP_Server
+ host 172.31.0.102
+object network user-lan
+ subnet 10.1.20.0 255.255.255.0
+object network Guest-Network
+ subnet 10.1.40.0 255.255.255.0
 object network |172.31.0.102
  host 172.31.0.102
 object-group network IPv4-Private-All-RFC1918
@@ -262,10 +277,10 @@ object network inside-lan
  nat (inside,outside) dynamic interface
 object network DMZ-LAN
  nat (dmz,outside) dynamic interface
-object network Guest-Network
- nat (guest,outside) dynamic interface
 object network user-lan
  nat (user,outside) dynamic interface
+object network Guest-Network
+ nat (guest,outside) dynamic interface
 
 route outside 0.0.0.0 0.0.0.0 10.0.1.1 1
 route inside 10.1.0.0 255.255.0.0 10.1.1.1 1
@@ -371,5 +386,5 @@ call-home
 snort preserve-connection
 snort multichannel-lb enable
 no dp-tcp-proxy
-Cryptochecksum:88882720f36982f308cb2bfa1b93924c
+Cryptochecksum:d094c27e967b0d50bc0eadb1d7cd4ec2
 : end
