@@ -1,0 +1,426 @@
+! Cisco IOS Software, C3750E Software (C3750E-UNIVERSALK9-M), Version 15.2(4)E6, RELEASE SOFTWARE (fc4)
+! 
+! Image: Software: C3750E-UNIVERSALK9-M, 15.2(4)E6, RELEASE SOFTWARE (fc4)
+! Image: Compiled: Thu 05-Apr-18 02:22 by prod_rel_team
+! Image: flash:c3750e-universalk9-mz.152-4.E6.bin
+! Chassis type: WS-C3750X-48P
+! Memory: main 262144K
+! Processor ID: FDO1813R0HJ
+! CPU: PowerPC405
+! 
+! VTP: VTP Version capable             : 1 to 3
+! VTP: VTP version running             : 1
+! VTP: VTP Domain Name                 : 
+! VTP: VTP Pruning Mode                : Disabled
+! VTP: VTP Traps Generation            : Enabled
+! VTP: Device ID                       : 1005.ca50.f300
+! VTP: Local updater ID is 10.1.50.2 on interface Vl50 (lowest numbered VLAN interface found)
+! VTP: Feature VLAN:
+! VTP: --------------
+! VTP: VTP Operating Mode                : Server
+! VTP: Maximum VLANs supported locally   : 255
+! VTP: Number of existing VLANs          : 12
+! VTP: Configuration Revision            : 20
+! VTP: MD5 digest                        : 0x40 0xC0 0x94 0x9E 0x55 0xE6 0x98 0x1F 
+! VTP:                                     0x98 0xCA 0x09 0xDE 0x7D 0x8E 0xC9 0x9F 
+! 
+! NAME: "1", DESCR: "WS-C3750X-48P"
+! PID: WS-C3750X-48PF-L  , VID: V06  , SN: FDO1813R0HJ
+! 
+! NAME: "Switch 1 - Power Supply 2", DESCR: "FRU Power Supply"
+! PID: C3KX-PWR-1100WAC  , VID: V02L , SN: LIT174212CL
+! 
+! NAME: "Switch 1 - FRULink Slot 1 - FRULink Module", DESCR: "FRULink 1G Module"
+! PID: C3KX-NM-1G        , VID: V01  , SN: FDO15272DK1
+! 
+! 
+!
+! Last configuration change at 21:48:07 UTC Tue Jan 3 2006 by admin
+!
+version 15.2
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname POE_SW_G1
+!
+boot-start-marker
+boot-end-marker
+!
+no logging console
+!
+username admin privilege 15 secret 5 $1$9Iav$rYo5i2Bc6tX1icX3f1i8U0
+no aaa new-model
+switch 1 provision ws-c3750x-48p
+system mtu routing 1500
+!
+!
+!
+!
+!
+!
+ip domain-name lab.local
+ip name-server 8.8.8.8
+ip name-server 1.1.1.1
+ip name-server 172.30.0.4
+!
+!
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-3394302720
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-3394302720
+ revocation-check none
+ rsakeypair TP-self-signed-3394302720
+!
+!
+crypto pki certificate chain TP-self-signed-3394302720
+ certificate self-signed 01
+  3082022B 30820194 A0030201 02020101 300D0609 2A864886 F70D0101 05050030 
+  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 33333934 33303237 3230301E 170D3036 30313032 30303031 
+  34305A17 0D323030 31303130 30303030 305A3031 312F302D 06035504 03132649 
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D33 33393433 
+  30323732 3030819F 300D0609 2A864886 F70D0101 01050003 818D0030 81890281 
+  8100C194 F7EF2F6F A345CDB7 7F3C9F1A 175134EF A83E8DF1 30C68A41 461D1728 
+  917B08FD D7413AEB 5BDB6E99 90C4B10B 90762882 BDB90220 33C2C143 9A34A87C 
+  AC3D5160 E07E5DB2 E88F607F D9D58895 A6645E02 C08CEE5D 8F308442 F20F683A 
+  10A5C34D 3F607B00 5E7918AB 1F94DF4D E3A16691 000BEA43 84A7AA3D 746002D7 
+  C8950203 010001A3 53305130 0F060355 1D130101 FF040530 030101FF 301F0603 
+  551D2304 18301680 14B096CA 530269B9 629141DC FBA3615E B61C43C6 A9301D06 
+  03551D0E 04160414 B096CA53 0269B962 9141DCFB A3615EB6 1C43C6A9 300D0609 
+  2A864886 F70D0101 05050003 8181003E ACA658CE 2E01BD2B A54CD369 22E645B3 
+  25BFC0D0 F0511989 2C5C68B9 325A3A74 7B45202F 960D4536 87CA9539 D2BC18C5 
+  0DB6D438 74B589AF 78064E5A 330DAC93 1562149B E04CC0E8 61CD2C79 A63D51B6 
+  087EE8E1 16D9B73B AD3C2271 2A8F41D4 9280383A 5828F563 8E311FDB C9369B10 
+  B63C36E9 998ABE32 FD047C8B EF8133
+  	quit
+archive
+ log config
+  logging enable
+!
+!
+!
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+!
+!
+!
+!
+!
+interface Port-channel1
+ switchport trunk allowed vlan 10,20,30,40,50,100
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface FastEthernet0
+ no ip address
+ no ip route-cache
+!
+interface GigabitEthernet1/0/1
+ switchport trunk allowed vlan 10,20,30
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ spanning-tree portfast edge trunk
+!
+interface GigabitEthernet1/0/2
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/3
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/4
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/5
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/6
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/7
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/8
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/9
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/10
+ switchport access vlan 20
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/11
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/12
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/13
+ switchport trunk allowed vlan 30,40,50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 50
+ switchport mode trunk
+ spanning-tree portfast edge trunk
+!
+interface GigabitEthernet1/0/14
+ switchport trunk allowed vlan 30,40,50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 50
+ switchport mode trunk
+ spanning-tree portfast edge trunk
+!
+interface GigabitEthernet1/0/15
+ description Link_To_C9120_EWC_eiei
+ switchport trunk allowed vlan 30,40,50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 50
+ switchport mode trunk
+ spanning-tree portfast edge trunk
+!
+interface GigabitEthernet1/0/16
+!
+interface GigabitEthernet1/0/17
+!
+interface GigabitEthernet1/0/18
+!
+interface GigabitEthernet1/0/19
+!
+interface GigabitEthernet1/0/20
+!
+interface GigabitEthernet1/0/21
+!
+interface GigabitEthernet1/0/22
+!
+interface GigabitEthernet1/0/23
+!
+interface GigabitEthernet1/0/24
+!
+interface GigabitEthernet1/0/25
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/26
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/27
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/28
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/29
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/30
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/31
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/32
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/33
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/34
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/35
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/36
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/37
+ switchport access vlan 99
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/38
+!
+interface GigabitEthernet1/0/39
+!
+interface GigabitEthernet1/0/40
+!
+interface GigabitEthernet1/0/41
+!
+interface GigabitEthernet1/0/42
+ description Link to L3
+ switchport trunk allowed vlan 10,20,30,40,50,100
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 1 mode active
+!
+interface GigabitEthernet1/0/43
+ description Link to L3
+ switchport trunk allowed vlan 10,20,30,40,50,100
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 1 mode active
+!
+interface GigabitEthernet1/0/44
+ description Link to L3
+ switchport trunk allowed vlan 10,20,30,40,50,100
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 1 mode active
+!
+interface GigabitEthernet1/0/45
+!
+interface GigabitEthernet1/0/46
+!
+interface GigabitEthernet1/0/47
+!
+interface GigabitEthernet1/0/48
+ switchport access vlan 50
+ switchport mode access
+!
+interface GigabitEthernet1/1/1
+!
+interface GigabitEthernet1/1/2
+!
+interface GigabitEthernet1/1/3
+!
+interface GigabitEthernet1/1/4
+!
+interface TenGigabitEthernet1/1/1
+!
+interface TenGigabitEthernet1/1/2
+!
+interface Vlan1
+ no ip address
+ no ip route-cache
+!
+interface Vlan10
+ no ip address
+ no ip route-cache
+!
+interface Vlan20
+ no ip address
+ no ip route-cache
+!
+interface Vlan30
+ no ip address
+ no ip route-cache
+!
+interface Vlan40
+ no ip address
+!
+interface Vlan50
+ ip address 10.1.50.2 255.255.255.0
+!
+ip default-gateway 10.1.50.1
+ip http server
+ip http secure-server
+ip ssh version 2
+!
+access-list 1 permit 192.168.10.0 0.0.0.255
+access-list 1 permit 192.168.20.0 0.0.0.255
+access-list 1 permit 192.168.30.0 0.0.0.255
+snmp-server group G1_ADMIN_GRP v3 priv read ALL write ALL notify ALL 
+snmp-server group G1_ADMIN_GRP v3 priv context G1_POE_SW_DEVICE_CTX notify ALL 
+snmp-server view ALL iso included
+snmp-server enable traps snmp authentication linkdown linkup coldstart warmstart
+snmp-server enable traps flowmon
+snmp-server enable traps transceiver all
+snmp-server enable traps call-home message-send-fail server-fail
+snmp-server enable traps tty
+snmp-server enable traps license
+snmp-server enable traps auth-framework sec-violation
+snmp-server enable traps cluster
+snmp-server enable traps config-copy
+snmp-server enable traps config
+snmp-server enable traps config-ctid
+snmp-server enable traps pki
+snmp-server enable traps energywise
+snmp-server enable traps fru-ctrl
+snmp-server enable traps entity
+snmp-server enable traps event-manager
+snmp-server enable traps power-ethernet group 1
+snmp-server enable traps power-ethernet police
+snmp-server enable traps cpu threshold
+snmp-server enable traps vstack
+snmp-server enable traps bridge newroot topologychange
+snmp-server enable traps stpx inconsistency root-inconsistency loop-inconsistency
+snmp-server enable traps syslog
+snmp-server enable traps vtp
+snmp-server enable traps vlancreate
+snmp-server enable traps vlandelete
+snmp-server enable traps flash insertion removal
+snmp-server enable traps port-security
+snmp-server enable traps envmon fan shutdown supply temperature status
+snmp-server enable traps stackwise
+snmp-server enable traps bulkstat collection transfer
+snmp-server enable traps errdisable
+snmp-server enable traps mac-notification change move threshold
+snmp-server enable traps vlan-membership
+snmp-server host 172.31.0.102 version 3 priv AdminG1 
+snmp-server context G1_POE_SW_DEVICE_CTX
+!
+no vstack
+!
+line con 0
+line vty 0 4
+ login local
+ transport input ssh
+line vty 5 15
+ login
+!
+!
+end
+
