@@ -36,6 +36,7 @@
 - **Intrusion Detection:** Cyberpunk Flask Honeypot deployed in DMZ (`10.1.100.10`)
 - **Monitoring:** Grafana (SNMP) & Wazuh (Log Analysis)
 
+
 ---
 
 ## ⚙️ Automation Workflow (Oxidized)
