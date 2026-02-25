@@ -1,4 +1,4 @@
-# 🚀 Group 1: Enterprise Network & Security Infrastructure
+# 🚀 Group 1: Enterprise Network & Security Infrastructure 
 
 [![Network Backup](https://img.shields.io/badge/Oxidized-Auto_Sync-success?style=for-the-badge&logo=cisco)](#)
 [![Security](https://img.shields.io/badge/SOC-Active-red?style=for-the-badge)](#)
