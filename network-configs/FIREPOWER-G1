@@ -180,6 +180,8 @@ object network SNMP_server_01
  host 172.31.0.102
 object network |10.0.1.1
  host 10.0.1.1
+object network |10.1.20.1
+ fqdn 10.1.20.1 id 1002
 object network MGMT-Network
  subnet 10.1.50.0 255.255.255.0
 object network MacMini_Honeypot
@@ -204,6 +206,9 @@ object-group network IPv4-Private-All-RFC1918
  network-object object IPv4-Private-10.0.0.0-8
  network-object object IPv4-Private-172.16.0.0-12
  network-object object IPv4-Private-192.168.0.0-16
+object-group service |acSvcg-268435471
+ service-object tcp source eq domain 
+ service-object udp source eq domain 
 object-group service |acSvcg-268435461
  service-object icmp 
  service-object tcp destination eq ssh 
@@ -223,6 +228,10 @@ object-group service |acSvcg-268435469
 object-group service |acSvcg-268435459
  service-object ip 
 access-group NGFW_ONBOX_ACL global
+access-list NGFW_ONBOX_ACL remark rule-id 268435471: ACCESS POLICY: NGFW_Access_Policy
+access-list NGFW_ONBOX_ACL remark rule-id 268435471: L5 RULE: Allow-DNS-For-Employee
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435471 ifc employee object Employee-LAN any rule-id 268435471 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435471 ifc inside object Employee-LAN any rule-id 268435471 
 access-list NGFW_ONBOX_ACL remark rule-id 268435461: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 268435461: L5 RULE: Allow-Prime-SNMP
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435461 ifc outside object SNMP_Server ifc inside object inside-lan rule-id 268435461 event-log both 
@@ -251,6 +260,8 @@ access-list NGFW_ONBOX_ACL advanced deny ip any any rule-id 1 event-log both
 pager lines 24
 logging enable
 logging timestamp
+logging trap warnings
+logging host inside 10.1.10.30
 logging permit-hostdown
 mtu inside-lag 1500
 mtu inside 1500
@@ -387,5 +398,5 @@ call-home
   subscribe-to-alert-group telemetry periodic daily
 snort preserve-connection
 snort multichannel-lb enable
-Cryptochecksum:7afe18a8953f20cfe796d1f6706ab44e
+Cryptochecksum:6171f3940f017b7aa80774b98fbb413e
 : end
