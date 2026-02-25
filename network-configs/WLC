@@ -99,6 +99,7 @@ advanced backup-controller secondary
 advanced backup-controller
 advanced backup-controller
 advanced sip-snooping-ports 0 0
+advanced eap eapol-key-timeout 5000
 advanced eap bcast-key-interval 3600
 advanced 802.11-abgn pak-rssi-location threshold -100
 advanced 802.11-abgn pak-rssi-location trigger-threshold 10
@@ -203,7 +204,7 @@ load-balancing window 5
 wlan apgroup add default-group
 wlan apgroup qinq tagging eap-sim-aka default-group enable
 nmsp cipher-option high enable
-wlan apgroup interface-mapping add default-group 1 guest-group-1
+wlan apgroup interface-mapping add default-group 1 guest-staff-1
 wlan apgroup interface-mapping add default-group 2 management
 wlan apgroup nac-snmp disable default-group 1
 wlan apgroup nac-snmp disable default-group 2
@@ -255,8 +256,11 @@ qos max-dscp bronze 10
 qos max-dscp silver 0
 qos max-dscp gold 34
 qos max-dscp platinum 46
+radius auth add 1 10.1.10.10 1812 ascii ****
 radius callStationIdType macaddr
 radius auth callStationIdType ap-macaddr-ssid
+radius auth retransmit-timeout 1 5
+radius auth mgmt-retransmit-timeout 1 5
 radius fallback-test mode passive
 radius fallback-test username cisco-probe
 radius fallback-test interval 300
@@ -418,9 +422,10 @@ wlan nac snmp disable 1
 wlan nac snmp disable 2
 wlan nac radius disable 1
 wlan nac radius disable 2
-wlan interface 1 guest-group-1
+wlan interface 1 guest-staff-1
 wlan multicast interface 1 disable
 wlan multicast interface 2 disable
+wlan aaa-override enable 1
 wlan band-select allow disable 1
 wlan band-select allow disable 2
 wlan custom-web sleep-client timeout 2 720
@@ -459,6 +464,7 @@ wlan wgb broadcast-tagging disable 2
 wlan wgb prp disable 1
 wlan wgb prp disable 2
 wlan security wpa disable 2
+wlan radius_server auth add 1 1
 wlan security splash-page-web-redir disable 1
 wlan security splash-page-web-redir disable 2
 wlan security web-auth enable 2
