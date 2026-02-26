@@ -36,7 +36,7 @@
 ! 
 ! 
 !
-! Last configuration change at 15:41:09 UTC Wed Feb 25 2026 by admin
+! Last configuration change at 09:40:21 UTC Thu Feb 26 2026 by admin
 !
 version 17.9
 service timestamps debug datetime msec
@@ -510,13 +510,13 @@ interface Vlan10
  ip address 10.1.10.1 255.255.255.0
 !
 interface Vlan20
- ip address 10.1.20.254 255.255.255.0
+ no ip address
 !
 interface Vlan30
  ip address 10.1.30.1 255.255.255.0
 !
 interface Vlan40
- ip address 10.1.40.254 255.255.255.0
+ no ip address
 !
 interface Vlan50
  ip address 10.1.50.1 255.255.255.0
