@@ -47,7 +47,7 @@
 - **Interval:** ทุก 3 ชั่วโมง
 - **Flow:** `Fetch via SSH` ➡️ `Detect Diff` ➡️ `Local Git Commit` ➡️ `Auto-Push via Hook`
 
----
+----
 
 ## 🎯 Current Sprint & Task Tracker
 
