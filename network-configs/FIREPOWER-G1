@@ -227,7 +227,12 @@ object-group service |acSvcg-268435469
  service-object ip 
 object-group service |acSvcg-268435459
  service-object ip 
+object-group service |acSvcg-268435472
+ service-object ip 
 access-group NGFW_ONBOX_ACL global
+access-list NGFW_ONBOX_ACL remark rule-id 268435472: ACCESS POLICY: NGFW_Access_Policy
+access-list NGFW_ONBOX_ACL remark rule-id 268435472: L7 RULE: block-it
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435472 any any rule-id 268435472 
 access-list NGFW_ONBOX_ACL remark rule-id 268435471: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 268435471: L5 RULE: Allow-DNS-For-Employee
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435471 ifc employee object Employee-LAN any rule-id 268435471 
@@ -398,5 +403,5 @@ call-home
   subscribe-to-alert-group telemetry periodic daily
 snort preserve-connection
 snort multichannel-lb enable
-Cryptochecksum:6171f3940f017b7aa80774b98fbb413e
+Cryptochecksum:02f85c5616a4f7377754f24ef6d4ea14
 : end
