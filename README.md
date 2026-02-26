@@ -1,10 +1,11 @@
-# 🚀 Group 1: Enterprise Network & Security Infrastructure
+# 🚀 Group 1: Enterprise Network & Security Infrastructure 
 
 [![Network Backup](https://img.shields.io/badge/Oxidized-Auto_Sync-success?style=for-the-badge&logo=cisco)](#)
 [![Security](https://img.shields.io/badge/SOC-Active-red?style=for-the-badge)](#)
 [![Identity](https://img.shields.io/badge/Samba4_AD-Online-blue?style=for-the-badge)](#)
 
 ระบบบริหารจัดการโครงสร้างพื้นฐานเครือข่าย ความปลอดภัย และเซิร์ฟเวอร์แบบบูรณาการ (Infrastructure as Code) ออกแบบโดยยึดหลัก Security-Hardened Architecture สำหรับโปรเจกต์ Computer Engineering
+
 
 ---
 
@@ -36,6 +37,7 @@
 - **Intrusion Detection:** Cyberpunk Flask Honeypot deployed in DMZ (`10.1.100.10`)
 - **Monitoring:** Grafana (SNMP) & Wazuh (Log Analysis)
 
+
 ---
 
 ## ⚙️ Automation Workflow (Oxidized)
@@ -45,7 +47,7 @@
 - **Interval:** ทุก 3 ชั่วโมง
 - **Flow:** `Fetch via SSH` ➡️ `Detect Diff` ➡️ `Local Git Commit` ➡️ `Auto-Push via Hook`
 
----
+----
 
 ## 🎯 Current Sprint & Task Tracker
 
