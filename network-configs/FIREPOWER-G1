@@ -207,8 +207,8 @@ object-group network IPv4-Private-All-RFC1918
  network-object object IPv4-Private-172.16.0.0-12
  network-object object IPv4-Private-192.168.0.0-16
 object-group service |acSvcg-268435471
- service-object tcp source eq domain 
- service-object udp source eq domain 
+ service-object tcp destination eq domain 
+ service-object udp destination eq domain 
 object-group service |acSvcg-268435461
  service-object icmp 
  service-object tcp destination eq ssh 
@@ -227,12 +227,10 @@ object-group service |acSvcg-268435469
  service-object ip 
 object-group service |acSvcg-268435459
  service-object ip 
-object-group service |acSvcg-268435472
- service-object ip 
+object-group service |acSvcg-268435473
+ service-object icmp 
+ service-object icmp6 
 access-group NGFW_ONBOX_ACL global
-access-list NGFW_ONBOX_ACL remark rule-id 268435472: ACCESS POLICY: NGFW_Access_Policy
-access-list NGFW_ONBOX_ACL remark rule-id 268435472: L7 RULE: block-it
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435472 any any rule-id 268435472 
 access-list NGFW_ONBOX_ACL remark rule-id 268435471: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 268435471: L5 RULE: Allow-DNS-For-Employee
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435471 ifc employee object Employee-LAN any rule-id 268435471 
@@ -259,6 +257,17 @@ access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc dm
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc employee any ifc outside any rule-id 268435459 event-log both 
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc guest any ifc outside any rule-id 268435459 event-log both 
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc inside any ifc outside any rule-id 268435459 event-log both 
+access-list NGFW_ONBOX_ACL remark rule-id 268435473: ACCESS POLICY: NGFW_Access_Policy
+access-list NGFW_ONBOX_ACL remark rule-id 268435473: L5 RULE: Allow-Internal-Ping
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc dmz any ifc dmz any rule-id 268435473 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc dmz any ifc employee any rule-id 268435473 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc dmz any ifc inside any rule-id 268435473 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc employee any ifc dmz any rule-id 268435473 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc employee any ifc employee any rule-id 268435473 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc employee any ifc inside any rule-id 268435473 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc inside any ifc dmz any rule-id 268435473 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc inside any ifc employee any rule-id 268435473 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc inside any ifc inside any rule-id 268435473 
 access-list NGFW_ONBOX_ACL remark rule-id 1: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 1: L5 RULE: DefaultActionRule
 access-list NGFW_ONBOX_ACL advanced deny ip any any rule-id 1 event-log both 
@@ -403,5 +412,5 @@ call-home
   subscribe-to-alert-group telemetry periodic daily
 snort preserve-connection
 snort multichannel-lb enable
-Cryptochecksum:02f85c5616a4f7377754f24ef6d4ea14
+Cryptochecksum:378f4fe73be8be538c7a0ac5a3cddfcd
 : end
