@@ -230,6 +230,8 @@ object-group service |acSvcg-268435459
 object-group service |acSvcg-268435473
  service-object icmp 
  service-object icmp6 
+object-group service |acSvcg-268435474
+ service-object ip 
 access-group NGFW_ONBOX_ACL global
 access-list NGFW_ONBOX_ACL remark rule-id 268435471: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 268435471: L5 RULE: Allow-DNS-For-Employee
@@ -242,6 +244,9 @@ access-list NGFW_ONBOX_ACL remark rule-id 268435460: ACCESS POLICY: NGFW_Access_
 access-list NGFW_ONBOX_ACL remark rule-id 268435460: L5 RULE: Allow_Outside_to_DMZ
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435460 ifc employee any ifc dmz object-group |acDestNwg-268435460 rule-id 268435460 event-log both 
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435460 ifc outside any ifc dmz object-group |acDestNwg-268435460 rule-id 268435460 event-log both 
+access-list NGFW_ONBOX_ACL remark rule-id 268435474: ACCESS POLICY: NGFW_Access_Policy
+access-list NGFW_ONBOX_ACL remark rule-id 268435474: L7 RULE: block it group
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435474 any ifc outside any rule-id 268435474 
 access-list NGFW_ONBOX_ACL remark rule-id 268435468: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 268435468: L5 RULE: Allow-DMZ-to-Server-App
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435468 ifc dmz any ifc inside object Server-LAN rule-id 268435468 
@@ -412,5 +417,5 @@ call-home
   subscribe-to-alert-group telemetry periodic daily
 snort preserve-connection
 snort multichannel-lb enable
-Cryptochecksum:378f4fe73be8be538c7a0ac5a3cddfcd
+Cryptochecksum:8d1ccddfd34cebd938bed4c75302e25b
 : end
