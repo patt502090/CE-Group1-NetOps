@@ -1,0 +1,30 @@
+services:
+  freeradius:
+    image: freeradius/freeradius-server:latest
+    container_name: freeradius
+    hostname: radius.group1.corp
+    restart: unless-stopped
+    ports:
+      - "1812:1812/udp"   # Authentication
+      - "1813:1813/udp"   # Accounting
+    volumes:
+      - ./config/clients.conf:/etc/freeradius/clients.conf:ro
+      - ./config/radiusd.conf:/etc/freeradius/radiusd.conf:ro
+      - ./config/mods-available/eap:/etc/freeradius/mods-available/eap:ro
+      # - ./certs:/etc/freeradius/certs:ro   # TLS certs for EAP-PEAP
+    environment:
+      TZ: Asia/Bangkok
+    networks:
+      server-net:
+        ipv4_address: 10.1.10.10
+
+    # NOTE: สำหรับ ntlm_auth ต้อง mount winbind socket จาก Samba4
+    # - /var/run/samba/winbindd:/var/run/samba/winbindd
+
+networks:
+  server-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.1.10.0/24
+          gateway: 10.1.10.1

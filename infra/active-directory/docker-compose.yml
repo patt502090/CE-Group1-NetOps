@@ -1,0 +1,53 @@
+services:
+  samba-ad:
+    image: crazymax/samba:latest
+    container_name: samba4-ad
+    hostname: dc1.group1.corp
+    restart: unless-stopped
+    domainname: group1.corp
+    ports:
+      - "53:53/tcp"        # DNS
+      - "53:53/udp"        # DNS
+      - "88:88/tcp"        # Kerberos
+      - "88:88/udp"        # Kerberos
+      - "135:135/tcp"      # RPC
+      - "137:137/udp"      # NetBIOS Name
+      - "138:138/udp"      # NetBIOS Datagram
+      - "139:139/tcp"      # NetBIOS Session
+      - "389:389/tcp"      # LDAP
+      - "389:389/udp"      # LDAP
+      - "445:445/tcp"      # SMB
+      - "464:464/tcp"      # Kerberos kpasswd
+      - "464:464/udp"      # Kerberos kpasswd
+      - "636:636/tcp"      # LDAPS
+      - "3268:3268/tcp"    # Global Catalog
+      - "3269:3269/tcp"    # Global Catalog SSL
+    volumes:
+      - samba-data:/var/lib/samba
+      - samba-config:/etc/samba
+      - ./config/smb.conf:/etc/samba/smb.conf:ro
+    environment:
+      TZ: Asia/Bangkok
+      SAMBA_DOMAIN: GROUP1
+      SAMBA_REALM: GROUP1.CORP
+      # ⚠️ เปลี่ยน password ก่อน deploy!
+      SAMBA_ADMIN_PASSWORD: P@ssw0rd_CHANGE_ME!
+      SAMBA_HOST_IP: 10.1.10.20
+    cap_add:
+      - SYS_ADMIN
+      - DAC_READ_SEARCH
+    networks:
+      server-net:
+        ipv4_address: 10.1.10.20
+
+volumes:
+  samba-data:
+  samba-config:
+
+networks:
+  server-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.1.10.0/24
+          gateway: 10.1.10.1

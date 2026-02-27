@@ -1,0 +1,51 @@
+# /etc/freeradius/mods-available/eap
+# EAP Configuration — EAP-PEAP with MSCHAPv2 (Inner Method)
+#
+# สำหรับ 802.1X WiFi Authentication (VLAN 30 STAFF-WIFI)
+# Client จะเชื่อม TLS tunnel (PEAP) แล้ว authenticate ด้วย MSCHAPv2 ข้างใน
+
+eap {
+    default_eap_type = peap
+    timer_expire = 60
+    ignore_unknown_eap_types = no
+    cisco_accounting_username_bug = no
+    max_sessions = ${max_requests}
+
+    # ===== TLS (outer tunnel สำหรับ PEAP) =====
+    tls-config tls-common {
+        # ⚠️ ต้อง generate certificate ก่อน deploy
+        # ใช้คำสั่ง: cd /etc/freeradius/certs && make
+        private_key_file = ${certdir}/server.pem
+        certificate_file = ${certdir}/server.pem
+        ca_file = ${cadir}/ca.pem
+        ca_path = ${cadir}
+
+        # TLS version constraints
+        tls_min_version = "1.2"
+        tls_max_version = "1.3"
+
+        cipher_list = "DEFAULT"
+
+        # OCSP (optional)
+        # ocsp {
+        #     enable = no
+        # }
+    }
+
+    # ===== PEAP =====
+    peap {
+        tls = tls-common
+        default_eap_type = mschapv2
+        copy_request_to_tunnel = yes
+        use_tunneled_reply = yes
+
+        # Virtual server สำหรับ inner-tunnel authentication
+        virtual_server = "inner-tunnel"
+    }
+
+    # ===== MSCHAPv2 (inner method) =====
+    mschapv2 {
+        send_error = no
+        identity = "FreeRADIUS"
+    }
+}

@@ -29,9 +29,8 @@ interface Port-channel1.1
  ip address 10.1.1.2 255.255.255.252 
 !
 interface Port-channel1.20
- shutdown
  vlan 20
- nameif user
+ nameif employee
  security-level 0
  ip address 10.1.20.1 255.255.255.0 
 !
@@ -46,6 +45,21 @@ interface Port-channel1.100
  nameif dmz
  security-level 0
  ip address 10.1.100.1 255.255.255.0 
+!
+interface Ethernet1/1
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/2
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/3
+ no nameif
+ no security-level
+ no ip address
 !
 interface Ethernet1/4
  shutdown
@@ -160,34 +174,41 @@ object network Inter-link-L3-FW
  subnet 10.255.255.0 255.255.255.252
 object network |10.1.1.1
  host 10.1.1.1
-object network |10.0.1.1
- host 10.0.1.1
-object network MacMini_Honeypot
- host 10.1.100.10
-object network |10.0.1.2
- host 10.0.1.2
 object network DMZ-LAN
  subnet 10.1.100.0 255.255.255.0
+object network SNMP_server_01
+ host 172.31.0.102
+object network |10.0.1.1
+ host 10.0.1.1
+object network |10.1.20.1
+ fqdn 10.1.20.1 id 1002
+object network MGMT-Network
+ subnet 10.1.50.0 255.255.255.0
+object network MacMini_Honeypot
+ host 10.1.100.10
+object network Server-LAN
+ subnet 10.1.10.0 255.255.255.0
 object network DMZ-Network
  subnet 10.1.100.0 255.255.255.0
+object network |10.0.1.2
+ host 10.0.1.2
 object network SNMP_Server
- host 172.31.0.102
-object network SNMP_server_01
  host 172.31.0.102
 object network Guest-Network
  subnet 10.1.40.0 255.255.255.0
-object network Server-LAN
- subnet 10.1.10.0 255.255.255.0
-object network user-lan
- subnet 10.1.20.0 255.255.255.0
-object network MGMT-Network
- subnet 10.1.50.0 255.255.255.0
 object network |172.31.0.102
  host 172.31.0.102
+object network portal.group1.corp
+ fqdn portal.group1.corp id 1001
+object network Employee-LAN
+ subnet 10.1.20.0 255.255.255.0
 object-group network IPv4-Private-All-RFC1918
  network-object object IPv4-Private-10.0.0.0-8
  network-object object IPv4-Private-172.16.0.0-12
  network-object object IPv4-Private-192.168.0.0-16
+object-group service |acSvcg-268435471
+ service-object tcp source eq domain 
+ service-object udp source eq domain 
 object-group service |acSvcg-268435461
  service-object icmp 
  service-object tcp destination eq ssh 
@@ -206,14 +227,23 @@ object-group service |acSvcg-268435469
  service-object ip 
 object-group service |acSvcg-268435459
  service-object ip 
+object-group service |acSvcg-268435472
+ service-object ip 
 access-group NGFW_ONBOX_ACL global
+access-list NGFW_ONBOX_ACL remark rule-id 268435472: ACCESS POLICY: NGFW_Access_Policy
+access-list NGFW_ONBOX_ACL remark rule-id 268435472: L7 RULE: block-it
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435472 any any rule-id 268435472 
+access-list NGFW_ONBOX_ACL remark rule-id 268435471: ACCESS POLICY: NGFW_Access_Policy
+access-list NGFW_ONBOX_ACL remark rule-id 268435471: L5 RULE: Allow-DNS-For-Employee
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435471 ifc employee object Employee-LAN any rule-id 268435471 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435471 ifc inside object Employee-LAN any rule-id 268435471 
 access-list NGFW_ONBOX_ACL remark rule-id 268435461: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 268435461: L5 RULE: Allow-Prime-SNMP
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435461 ifc outside object SNMP_Server ifc inside object inside-lan rule-id 268435461 event-log both 
 access-list NGFW_ONBOX_ACL remark rule-id 268435460: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 268435460: L5 RULE: Allow_Outside_to_DMZ
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435460 ifc employee any ifc dmz object-group |acDestNwg-268435460 rule-id 268435460 event-log both 
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435460 ifc outside any ifc dmz object-group |acDestNwg-268435460 rule-id 268435460 event-log both 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435460 ifc user any ifc dmz object-group |acDestNwg-268435460 rule-id 268435460 event-log both 
 access-list NGFW_ONBOX_ACL remark rule-id 268435468: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 268435468: L5 RULE: Allow-DMZ-to-Server-App
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435468 ifc dmz any ifc inside object Server-LAN rule-id 268435468 
@@ -226,19 +256,21 @@ access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435469 ifc in
 access-list NGFW_ONBOX_ACL remark rule-id 268435459: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 268435459: L5 RULE: ALLOW-INTERNET
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc dmz any ifc outside any rule-id 268435459 event-log both 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc employee any ifc outside any rule-id 268435459 event-log both 
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc guest any ifc outside any rule-id 268435459 event-log both 
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc inside any ifc outside any rule-id 268435459 event-log both 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc user any ifc outside any rule-id 268435459 event-log both 
 access-list NGFW_ONBOX_ACL remark rule-id 1: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 1: L5 RULE: DefaultActionRule
 access-list NGFW_ONBOX_ACL advanced deny ip any any rule-id 1 event-log both 
 pager lines 24
 logging enable
 logging timestamp
+logging trap warnings
+logging host inside 10.1.10.30
 logging permit-hostdown
 mtu inside-lag 1500
 mtu inside 1500
-mtu user 1500
+mtu employee 1500
 mtu guest 1500
 mtu dmz 1500
 mtu outside 1500
@@ -246,7 +278,7 @@ mtu management 1500
 no failover
 failover replication http
 monitor-interface inside
-monitor-interface user
+monitor-interface employee
 monitor-interface guest
 monitor-interface dmz
 no monitor-interface service-module 
@@ -264,8 +296,8 @@ object network DMZ-LAN
  nat (dmz,outside) dynamic interface
 object network Guest-Network
  nat (guest,outside) dynamic interface
-object network user-lan
- nat (user,outside) dynamic interface
+object network Employee-LAN
+ nat (employee,outside) dynamic interface
 
 route outside 0.0.0.0 0.0.0.0 10.0.1.1 1
 route inside 10.1.0.0 255.255.0.0 10.1.1.1 1
@@ -288,14 +320,14 @@ ip-client management
 ip-client management ipv6
 ip-client outside
 ip-client outside ipv6
+ip-client employee
+ip-client employee ipv6
 ip-client dmz
 ip-client dmz ipv6
 ip-client inside
 ip-client inside ipv6
 ip-client guest
 ip-client guest ipv6
-ip-client user
-ip-client user ipv6
 snmp-server group AUTH v3 auth 
 snmp-server group PRIV v3 priv 
 snmp-server group NOAUTH v3 noauth 
@@ -357,6 +389,7 @@ policy-map global_policy
 !
 service-policy global_policy global
 prompt hostname context 
+captive-portal global
 call-home
  profile CiscoTAC-1
   no active
@@ -370,6 +403,5 @@ call-home
   subscribe-to-alert-group telemetry periodic daily
 snort preserve-connection
 snort multichannel-lb enable
-no dp-tcp-proxy
-Cryptochecksum:88882720f36982f308cb2bfa1b93924c
+Cryptochecksum:02f85c5616a4f7377754f24ef6d4ea14
 : end
