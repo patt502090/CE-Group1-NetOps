@@ -35,7 +35,7 @@
 ! 
 ! 
 !
-! Last configuration change at 17:59:57 UTC Fri Jan 6 2006 by admin
+! Last configuration change at 21:37:31 UTC Fri Jan 6 2006 by admin
 !
 version 15.2
 no service pad
@@ -211,10 +211,11 @@ interface GigabitEthernet1/0/15
 !
 interface GigabitEthernet1/0/16
  description Link_To_C9120_EWC_2
+ switchport access vlan 50
  switchport trunk allowed vlan 30,40,50
  switchport trunk encapsulation dot1q
  switchport trunk native vlan 50
- switchport mode trunk
+ switchport mode access
  spanning-tree portfast edge trunk
 !
 interface GigabitEthernet1/0/17
