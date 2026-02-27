@@ -1,9 +1,42 @@
-L3_SW_G1#show running-config
-Building configuration...
-
-Current configuration : 18753 bytes
+! Cisco IOS XE Software, Version 17.09.04
+! 
+! Image: Software: CAT9K_LITE_IOSXE, 17.9.4, RELEASE SOFTWARE (fc5)
+! Image: Compiled: Wed 26-Jul-23 10:43 by mcpre
+! Image: flash:packages.conf
+! Chassis type: C9200L-48T-4G
+! Memory: main 519487K/3071K
+! Processor ID: FOC273609EN
+! CPU: ARM64
+! Memory: nvram 2048K
+! 
+! VTP: VTP Version capable             : 1 to 3
+! VTP: VTP version running             : 1
+! VTP: VTP Domain Name                 : 
+! VTP: VTP Pruning Mode                : Disabled (Operationally Disabled)
+! VTP: VTP Traps Generation            : Enabled
+! VTP: Device ID                       : ccd3.423d.0400
+! VTP: Local updater ID is 10.1.1.1 on interface Vl1 (lowest numbered VLAN interface found)
+! VTP: Feature VLAN:
+! VTP: --------------
+! VTP: VTP Operating Mode                : Server
+! VTP: Maximum VLANs supported locally   : 1005
+! VTP: Number of existing VLANs          : 12
+! VTP: Configuration Revision            : 22
+! VTP: MD5 digest                        : 0x23 0x1B 0x54 0x52 0x21 0x55 0x7E 0x71 
+! VTP:                                     0x44 0xAB 0x52 0x69 0xD3 0x4C 0xBE 0x5C 
+! 
+! NAME: "c92xxL Stack", DESCR: "c92xxL Stack"
+! PID: C9200L-48T-4G     , VID: V02  , SN: FOC273609EN
+! 
+! NAME: "Switch 1", DESCR: "C9200L-48T-4G"
+! PID: C9200L-48T-4G     , VID: V02  , SN: FOC273609EN
+! 
+! NAME: "Switch 1 - Power Supply A", DESCR: "Switch 1 - Power Supply A"
+! PID: PWR-C5-125WAC     , VID: V01  , SN: LIT2644A3RN
+! 
+! 
 !
-! Last configuration change at 09:40:21 UTC Thu Feb 26 2026 by admin
+! Last configuration change at 08:30:45 UTC Fri Feb 27 2026 by admin
 !
 version 17.9
 service timestamps debug datetime msec
@@ -63,6 +96,11 @@ ip dhcp pool EMPLOYEE
  network 10.1.20.0 255.255.255.0
  default-router 10.1.20.1
  dns-server 10.1.10.20 172.30.0.4 192.100.77.10
+!
+ip dhcp pool EMPLOYEE
+ network 10.1.20.0 255.255.255.0
+ default-router 10.1.20.1 
+ dns-server 10.1.10.20 172.30.0.4 192.100.77.10 
 !
 !
 !
@@ -477,7 +515,7 @@ interface Vlan10
  ip address 10.1.10.1 255.255.255.0
 !
 interface Vlan20
- no ip address
+ ip address 10.1.20.2 255.255.255.0
 !
 interface Vlan30
  ip address 10.1.30.1 255.255.255.0
