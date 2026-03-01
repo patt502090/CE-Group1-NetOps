@@ -36,7 +36,7 @@
 ! 
 ! 
 !
-! Last configuration change at 08:30:45 UTC Fri Feb 27 2026 by admin
+! Last configuration change at 15:39:51 UTC Sun Mar 1 2026 by admin
 !
 version 17.9
 service timestamps debug datetime msec
@@ -544,7 +544,7 @@ ip access-list extended VLAN20-IN
  20 deny ip any 10.1.0.0 0.0.255.255
  30 permit ip any any
 !
-logging source-interface Vlan10
+logging source-interface Vlan50
 logging host 10.1.10.20 transport udp port 1514
 logging host 10.1.10.10 transport udp port 1514
 logging host 10.1.10.1
