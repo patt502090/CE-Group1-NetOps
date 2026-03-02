@@ -20,10 +20,10 @@
 ! VTP: --------------
 ! VTP: VTP Operating Mode                : Server
 ! VTP: Maximum VLANs supported locally   : 1005
-! VTP: Number of existing VLANs          : 12
-! VTP: Configuration Revision            : 22
-! VTP: MD5 digest                        : 0x23 0x1B 0x54 0x52 0x21 0x55 0x7E 0x71 
-! VTP:                                     0x44 0xAB 0x52 0x69 0xD3 0x4C 0xBE 0x5C 
+! VTP: Number of existing VLANs          : 13
+! VTP: Configuration Revision            : 24
+! VTP: MD5 digest                        : 0xB0 0xB8 0xF9 0x20 0x04 0xC4 0xC4 0xC7 
+! VTP:                                     0x66 0x1B 0xA7 0xF4 0x8A 0x17 0x0F 0xEC 
 ! 
 ! NAME: "c92xxL Stack", DESCR: "c92xxL Stack"
 ! PID: C9200L-48T-4G     , VID: V02  , SN: FOC273609EN
@@ -36,7 +36,7 @@
 ! 
 ! 
 !
-! Last configuration change at 15:39:51 UTC Sun Mar 1 2026 by admin
+! Last configuration change at 04:56:48 UTC Mon Mar 2 2026 by admin
 !
 version 17.9
 service timestamps debug datetime msec
@@ -70,6 +70,7 @@ ip domain name group1.com
 ip dhcp excluded-address 10.1.50.1 10.1.50.50
 ip dhcp excluded-address 10.1.10.20
 ip dhcp excluded-address 10.1.20.1 10.1.20.10
+ip dhcp excluded-address 10.1.60.1 10.1.60.10
 !
 ip dhcp pool STAFF
  network 10.1.30.0 255.255.255.0
@@ -96,6 +97,16 @@ ip dhcp pool EMPLOYEE
  network 10.1.20.0 255.255.255.0
  default-router 10.1.20.1 
  dns-server 10.1.10.20 172.30.0.4 192.100.77.10 
+!
+ip dhcp pool VLAN60_MGMT
+ network 10.1.60.0 255.255.255.0
+ default-router 10.1.60.1 
+ option 43 hex f104.0a01.3c32
+!
+ip dhcp pool EWC_PRIMARY_FIXED
+ host 10.1.60.50 255.255.255.0
+ default-router 10.1.60.1 
+ option 43 hex f104.0a01.3c32
 !
 !
 !
@@ -262,11 +273,12 @@ policy-map system-cpp-policy
 !
 !
 interface Port-channel1
+ switchport trunk allowed vlan 1-59,61-4094
  switchport mode trunk
  switchport nonegotiate
 !
 interface Port-channel2
- switchport trunk allowed vlan 10,20,30,40,50,100
+ switchport trunk allowed vlan 10,20,30,40,50,60,100
  switchport mode trunk
 !
 interface Port-channel3
@@ -432,6 +444,7 @@ interface GigabitEthernet1/0/36
 !
 interface GigabitEthernet1/0/37
  description Link to WLC
+ switchport trunk allowed vlan 1-59,61-4094
  switchport mode trunk
  switchport nonegotiate
  channel-group 1 mode on
@@ -439,6 +452,7 @@ interface GigabitEthernet1/0/37
 !
 interface GigabitEthernet1/0/38
  description Link to WLC
+ switchport trunk allowed vlan 1-59,61-4094
  switchport mode trunk
  switchport nonegotiate
  channel-group 1 mode on
@@ -446,6 +460,7 @@ interface GigabitEthernet1/0/38
 !
 interface GigabitEthernet1/0/39
  description Link to WLC
+ switchport trunk allowed vlan 1-59,61-4094
  switchport mode trunk
  switchport nonegotiate
  channel-group 1 mode on
@@ -453,6 +468,7 @@ interface GigabitEthernet1/0/39
 !
 interface GigabitEthernet1/0/40
  description Link to WLC
+ switchport trunk allowed vlan 1-59,61-4094
  switchport mode trunk
  switchport nonegotiate
  channel-group 1 mode on
@@ -476,17 +492,17 @@ interface GigabitEthernet1/0/44
  shutdown
 !
 interface GigabitEthernet1/0/45
- switchport trunk allowed vlan 10,20,30,40,50,100
+ switchport trunk allowed vlan 10,20,30,40,50,60,100
  switchport mode trunk
  channel-group 2 mode active
 !
 interface GigabitEthernet1/0/46
- switchport trunk allowed vlan 10,20,30,40,50,100
+ switchport trunk allowed vlan 10,20,30,40,50,60,100
  switchport mode trunk
  channel-group 2 mode active
 !
 interface GigabitEthernet1/0/47
- switchport trunk allowed vlan 10,20,30,40,50,100
+ switchport trunk allowed vlan 10,20,30,40,50,60,100
  switchport mode trunk
  channel-group 2 mode active
 !
@@ -520,6 +536,10 @@ interface Vlan40
 !
 interface Vlan50
  ip address 10.1.50.1 255.255.255.0
+!
+interface Vlan60
+ description Gateway_Building_2
+ ip address 10.1.60.1 255.255.255.0
 !
 interface Vlan100
  no ip address
