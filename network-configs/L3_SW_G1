@@ -21,9 +21,9 @@
 ! VTP: VTP Operating Mode                : Server
 ! VTP: Maximum VLANs supported locally   : 1005
 ! VTP: Number of existing VLANs          : 13
-! VTP: Configuration Revision            : 24
-! VTP: MD5 digest                        : 0xB0 0xB8 0xF9 0x20 0x04 0xC4 0xC4 0xC7 
-! VTP:                                     0x66 0x1B 0xA7 0xF4 0x8A 0x17 0x0F 0xEC 
+! VTP: Configuration Revision            : 25
+! VTP: MD5 digest                        : 0x24 0x5A 0xB8 0x1B 0xC6 0x58 0xEB 0x53 
+! VTP:                                     0xE1 0x8C 0x7D 0x3B 0x47 0x21 0x19 0x18 
 ! 
 ! NAME: "c92xxL Stack", DESCR: "c92xxL Stack"
 ! PID: C9200L-48T-4G     , VID: V02  , SN: FOC273609EN
@@ -36,7 +36,7 @@
 ! 
 ! 
 !
-! Last configuration change at 04:56:48 UTC Mon Mar 2 2026 by admin
+! Last configuration change at 05:42:42 UTC Mon Mar 2 2026 by admin
 !
 version 17.9
 service timestamps debug datetime msec
@@ -105,6 +105,7 @@ ip dhcp pool VLAN60_MGMT
 !
 ip dhcp pool EWC_PRIMARY_FIXED
  host 10.1.60.50 255.255.255.0
+ client-identifier 01f4.bd9e.9a5c.14
  default-router 10.1.60.1 
  option 43 hex f104.0a01.3c32
 !
