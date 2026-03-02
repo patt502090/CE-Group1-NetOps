@@ -35,7 +35,7 @@
 ! 
 ! 
 !
-! Last configuration change at 16:41:47 UTC Mon Jan 9 2006 by admin
+! Last configuration change at 17:45:07 UTC Mon Jan 9 2006 by admin
 !
 version 15.2
 no service pad
@@ -117,7 +117,7 @@ vlan internal allocation policy ascending
 !
 !
 interface Port-channel1
- switchport trunk allowed vlan 10,20,30,40,50,100
+ switchport trunk allowed vlan 10,20,30,40,50,60,100
  switchport trunk encapsulation dot1q
  switchport mode trunk
 !
@@ -202,22 +202,28 @@ interface GigabitEthernet1/0/14
  spanning-tree portfast edge trunk
 !
 interface GigabitEthernet1/0/15
- description Link_To_C9120_EWC_eiei
- switchport trunk allowed vlan 30,40,50
+ description Link_To_EWC_Building2_Primary
+ switchport trunk allowed vlan 30,40,60
  switchport trunk encapsulation dot1q
- switchport trunk native vlan 50
+ switchport trunk native vlan 60
  switchport mode trunk
  spanning-tree portfast edge trunk
 !
 interface GigabitEthernet1/0/16
- description Link_To_C9120_EWC_2
- switchport trunk allowed vlan 30,40,50
+ description Link_To_EWC_Building2_Secondary
+ switchport trunk allowed vlan 30,40,60
  switchport trunk encapsulation dot1q
- switchport trunk native vlan 50
+ switchport trunk native vlan 60
  switchport mode trunk
  spanning-tree portfast edge trunk
 !
 interface GigabitEthernet1/0/17
+ description Link_To_Outdoor_AP_1561
+ switchport trunk allowed vlan 30,40,60
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 60
+ switchport mode trunk
+ spanning-tree portfast edge trunk
 !
 interface GigabitEthernet1/0/18
 !
@@ -308,21 +314,21 @@ interface GigabitEthernet1/0/41
 !
 interface GigabitEthernet1/0/42
  description Link to L3
- switchport trunk allowed vlan 10,20,30,40,50,100
+ switchport trunk allowed vlan 10,20,30,40,50,60,100
  switchport trunk encapsulation dot1q
  switchport mode trunk
  channel-group 1 mode active
 !
 interface GigabitEthernet1/0/43
  description Link to L3
- switchport trunk allowed vlan 10,20,30,40,50,100
+ switchport trunk allowed vlan 10,20,30,40,50,60,100
  switchport trunk encapsulation dot1q
  switchport mode trunk
  channel-group 1 mode active
 !
 interface GigabitEthernet1/0/44
  description Link to L3
- switchport trunk allowed vlan 10,20,30,40,50,100
+ switchport trunk allowed vlan 10,20,30,40,50,60,100
  switchport trunk encapsulation dot1q
  switchport mode trunk
  channel-group 1 mode active
