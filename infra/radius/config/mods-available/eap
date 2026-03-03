@@ -1,8 +1,14 @@
-# /etc/freeradius/mods-available/eap
+# /etc/freeradius/3.0/mods-available/eap
 # EAP Configuration — EAP-PEAP with MSCHAPv2 (Inner Method)
+#
+# Server: rasberrypi-888 (10.1.10.10)
+# FreeRADIUS 3.2.7
+# Synced from server: 2026-03-03 (key sections only — see full file on server)
 #
 # สำหรับ 802.1X WiFi Authentication (VLAN 30 STAFF-WIFI)
 # Client จะเชื่อม TLS tunnel (PEAP) แล้ว authenticate ด้วย MSCHAPv2 ข้างใน
+#
+# Note: mods-enabled/eap เป็น FILE COPY (ไม่ใช่ symlink) — ถ้าแก้ต้อง edit โดยตรง
 
 eap {
     default_eap_type = peap
@@ -11,39 +17,75 @@ eap {
     cisco_accounting_username_bug = no
     max_sessions = ${max_requests}
 
+    # EAP-MD5 (not recommended for wireless)
+    md5 {
+    }
+
+    # EAP-GTC
+    gtc {
+        auth_type = PAP
+    }
+
     # ===== TLS (outer tunnel สำหรับ PEAP) =====
     tls-config tls-common {
-        # ⚠️ ต้อง generate certificate ก่อน deploy
-        # ใช้คำสั่ง: cd /etc/freeradius/certs && make
-        private_key_file = ${certdir}/server.pem
-        certificate_file = ${certdir}/server.pem
-        ca_file = ${cadir}/ca.pem
+        # Let's Encrypt style certificates
+        private_key_password = admin888
+        private_key_file = ${certdir}/privkey1.pem
+        certificate_file = ${certdir}/fullchain1.pem
+        ca_file = ${certdir}/cert1.pem
         ca_path = ${cadir}
 
         # TLS version constraints
         tls_min_version = "1.2"
-        tls_max_version = "1.3"
+        tls_max_version = "1.2"
 
         cipher_list = "DEFAULT"
+        cipher_server_preference = no
+        ecdh_curve = ""
 
-        # OCSP (optional)
-        # ocsp {
-        #     enable = no
-        # }
+        # Session cache (disabled)
+        cache {
+            enable = no
+            lifetime = 24
+            store {
+                Tunnel-Private-Group-Id
+            }
+        }
+
+        verify {
+        }
+
+        ocsp {
+            enable = no
+            override_cert_url = yes
+            url = "http://127.0.0.1/ocsp/"
+        }
     }
 
-    # ===== PEAP =====
-    peap {
+    # ===== EAP-TLS =====
+    tls {
         tls = tls-common
-        default_eap_type = mschapv2
-        copy_request_to_tunnel = yes
-        use_tunneled_reply = yes
+    }
 
-        # Virtual server สำหรับ inner-tunnel authentication
+    # ===== EAP-TTLS =====
+    ttls {
+        tls = tls-common
+        default_eap_type = md5
+        copy_request_to_tunnel = no
+        use_tunneled_reply = yes
         virtual_server = "inner-tunnel"
     }
 
-    # ===== MSCHAPv2 (inner method) =====
+    # ===== PEAP (primary method) =====
+    peap {
+        tls = tls-common
+        default_eap_type = mschapv2
+        copy_request_to_tunnel = no
+        use_tunneled_reply = yes
+        virtual_server = "inner-tunnel"
+    }
+
+    # ===== MSCHAPv2 (inner method inside PEAP) =====
     mschapv2 {
         send_error = no
         identity = "FreeRADIUS"

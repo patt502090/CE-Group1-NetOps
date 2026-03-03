@@ -1,3 +1,9 @@
+# ⚠️ NOT IN USE — Samba4 AD DC runs natively via systemd on Raspberry Pi
+# ⚠️ This file is kept as reference for alternative Docker deployment only
+#
+# Actual deployment: sudo systemctl status samba-ad-dc
+# Server: raspberrypi (10.1.10.20), Debian 13 (trixie)
+
 services:
   samba-ad:
     image: crazymax/samba:latest

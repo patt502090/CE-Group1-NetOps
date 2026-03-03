@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset>
+  <!-- Local rules for Firepower 2100 syslog -->
+
+  <!-- Multiple failed logins: trigger when 5+ failures within 60 seconds -->
+  <rule id="100100" level="10" frequency="5" timeframe="60">
+    <match>failed login|failed authentication|invalid user|authentication failure|Login failed</match>
+    <description>Multiple failed logins from Firepower (>=5)</description>
+  </rule>
+
+  <!-- ACL deny spike: detect many ACL denies in short timeframe -->
+  <rule id="100110" level="10" frequency="20" timeframe="60">
+    <match>ACL deny|access-list.*deny|Denied by ACL|Deny TCP|Deny UDP</match>
+    <description>ACL deny spike detected from Firepower</description>
+  </rule>
+
+  <!-- AP down: match messages indicating an access point went down -->
+  <rule id="100120" level="12">
+    <match>AP down|access point down|wireless access point.*down|ap down|access-point down</match>
+    <description>Access point down reported by Firepower</description>
+  </rule>
+
+  <!-- High CPU: match logs that report CPU percentage >= 80% -->
+  <rule id="100130" level="8">
+    <match>CPU.*([8-9][0-9]|100)%|high cpu|CPU utilization|CPU usage</match>
+    <description>High CPU usage reported (>80%)</description>
+  </rule>
+
+</ruleset>
