@@ -35,7 +35,7 @@
 ! 
 ! 
 !
-! Last configuration change at 21:04:56 UTC Mon Jan 9 2006 by admin
+! Last configuration change at 19:16:31 UTC Tue Jan 10 2006 by admin
 !
 version 15.2
 no service pad
@@ -219,9 +219,9 @@ interface GigabitEthernet1/0/16
 !
 interface GigabitEthernet1/0/17
  description Link_To_Outdoor_AP_1561
- switchport trunk allowed vlan 30,40,60
+ switchport trunk allowed vlan 30,40,50
  switchport trunk encapsulation dot1q
- switchport trunk native vlan 60
+ switchport trunk native vlan 50
  switchport mode trunk
  spanning-tree portfast edge trunk
 !
