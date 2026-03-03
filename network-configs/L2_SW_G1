@@ -207,7 +207,6 @@ interface GigabitEthernet1/0/15
  switchport trunk encapsulation dot1q
  switchport trunk native vlan 60
  switchport mode trunk
- shutdown
  spanning-tree portfast edge trunk
 !
 interface GigabitEthernet1/0/16
@@ -216,7 +215,6 @@ interface GigabitEthernet1/0/16
  switchport trunk encapsulation dot1q
  switchport trunk native vlan 60
  switchport mode trunk
- shutdown
  spanning-tree portfast edge trunk
 !
 interface GigabitEthernet1/0/17
