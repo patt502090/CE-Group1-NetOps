@@ -35,7 +35,7 @@
 ! 
 ! 
 !
-! Last configuration change at 23:34:07 UTC Wed Jan 11 2006 by admin
+! Last configuration change at 01:14:48 UTC Thu Jan 12 2006 by admin
 !
 version 15.2
 no service pad
@@ -343,10 +343,10 @@ interface GigabitEthernet1/0/16
  spanning-tree portfast edge trunk
 !
 interface GigabitEthernet1/0/17
- description Link_To_Outdoor_WCL
- switchport trunk allowed vlan 30,40,50
+ description Link_To_Outdoor_AP_EWC_Building2
+ switchport trunk allowed vlan 30,40,60
  switchport trunk encapsulation dot1q
- switchport trunk native vlan 50
+ switchport trunk native vlan 60
  switchport mode trunk
  spanning-tree portfast edge trunk
 !
