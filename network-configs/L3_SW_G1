@@ -1,9 +1,49 @@
+<<<<<<< Updated upstream
 L3_SW_G1#show running-config
 Building configuration...
 
 Current configuration : 19413 bytes
+=======
+! Cisco IOS XE Software, Version 17.09.04
+! 
+! Image: Software: CAT9K_LITE_IOSXE, 17.9.4, RELEASE SOFTWARE (fc5)
+! Image: Compiled: Wed 26-Jul-23 10:43 by mcpre
+! Image: flash:packages.conf
+! Chassis type: C9200L-48T-4G
+! Memory: main 519487K/3071K
+! Processor ID: FOC273609EN
+! CPU: ARM64
+! Memory: nvram 2048K
+! 
+! VTP: VTP Version capable             : 1 to 3
+! VTP: VTP version running             : 1
+! VTP: VTP Domain Name                 : 
+! VTP: VTP Pruning Mode                : Disabled (Operationally Disabled)
+! VTP: VTP Traps Generation            : Enabled
+! VTP: Device ID                       : ccd3.423d.0400
+! VTP: Local updater ID is 10.1.1.1 on interface Vl1 (lowest numbered VLAN interface found)
+! VTP: Feature VLAN:
+! VTP: --------------
+! VTP: VTP Operating Mode                : Server
+! VTP: Maximum VLANs supported locally   : 1005
+! VTP: Number of existing VLANs          : 12
+! VTP: Configuration Revision            : 22
+! VTP: MD5 digest                        : 0x23 0x1B 0x54 0x52 0x21 0x55 0x7E 0x71 
+! VTP:                                     0x44 0xAB 0x52 0x69 0xD3 0x4C 0xBE 0x5C 
+! 
+! NAME: "c92xxL Stack", DESCR: "c92xxL Stack"
+! PID: C9200L-48T-4G     , VID: V02  , SN: FOC273609EN
+! 
+! NAME: "Switch 1", DESCR: "C9200L-48T-4G"
+! PID: C9200L-48T-4G     , VID: V02  , SN: FOC273609EN
+! 
+! NAME: "Switch 1 - Power Supply A", DESCR: "Switch 1 - Power Supply A"
+! PID: PWR-C5-125WAC     , VID: V01  , SN: LIT2644A3RN
+! 
+! 
+>>>>>>> Stashed changes
 !
-! Last configuration change at 07:14:51 UTC Tue Mar 3 2026 by admin
+! Last configuration change at 15:39:51 UTC Sun Mar 1 2026 by admin
 !
 version 17.9
 service timestamps debug datetime msec
@@ -37,7 +77,6 @@ ip domain name group1.com
 ip dhcp excluded-address 10.1.50.1 10.1.50.50
 ip dhcp excluded-address 10.1.10.20
 ip dhcp excluded-address 10.1.20.1 10.1.20.10
-ip dhcp excluded-address 10.1.60.1 10.1.60.10
 !
 ip dhcp pool STAFF
  network 10.1.30.0 255.255.255.0
@@ -59,12 +98,21 @@ ip dhcp pool RPI_20_FIXED
  client-identifier 01d8.3add.433f.a7
  default-router 10.1.10.1
  dns-server 192.100.77.10 172.30.0.4
+<<<<<<< Updated upstream
+=======
+!
+ip dhcp pool EMPLOYEE
+ network 10.1.20.0 255.255.255.0
+ default-router 10.1.20.1
+ dns-server 10.1.10.20 172.30.0.4 192.100.77.10
+>>>>>>> Stashed changes
 !
 ip dhcp pool EMPLOYEE
  network 10.1.20.0 255.255.255.0
  default-router 10.1.20.1
  dns-server 10.1.10.20 172.30.0.4 192.100.77.10
 !
+<<<<<<< Updated upstream
 ip dhcp pool VLAN60_MGMT
  network 10.1.60.0 255.255.255.0
  default-router 10.1.60.1
@@ -76,6 +124,8 @@ ip dhcp pool EWC_PRIMARY_FIXED
  default-router 10.1.60.1
  option 43 hex f104.0a01.3c32
 !
+=======
+>>>>>>> Stashed changes
 !
 !
 login on-success log
@@ -241,12 +291,11 @@ policy-map system-cpp-policy
 !
 !
 interface Port-channel1
- switchport trunk allowed vlan 1-59,61-4094
  switchport mode trunk
  switchport nonegotiate
 !
 interface Port-channel2
- switchport trunk allowed vlan 10,20,30,40,50,60,100
+ switchport trunk allowed vlan 10,20,30,40,50,100
  switchport mode trunk
 !
 interface Port-channel3
@@ -412,7 +461,6 @@ interface GigabitEthernet1/0/36
 !
 interface GigabitEthernet1/0/37
  description Link to WLC
- switchport trunk allowed vlan 1-59,61-4094
  switchport mode trunk
  switchport nonegotiate
  channel-group 1 mode on
@@ -420,7 +468,6 @@ interface GigabitEthernet1/0/37
 !
 interface GigabitEthernet1/0/38
  description Link to WLC
- switchport trunk allowed vlan 1-59,61-4094
  switchport mode trunk
  switchport nonegotiate
  channel-group 1 mode on
@@ -428,7 +475,6 @@ interface GigabitEthernet1/0/38
 !
 interface GigabitEthernet1/0/39
  description Link to WLC
- switchport trunk allowed vlan 1-59,61-4094
  switchport mode trunk
  switchport nonegotiate
  channel-group 1 mode on
@@ -436,7 +482,6 @@ interface GigabitEthernet1/0/39
 !
 interface GigabitEthernet1/0/40
  description Link to WLC
- switchport trunk allowed vlan 1-59,61-4094
  switchport mode trunk
  switchport nonegotiate
  channel-group 1 mode on
@@ -460,17 +505,17 @@ interface GigabitEthernet1/0/44
  shutdown
 !
 interface GigabitEthernet1/0/45
- switchport trunk allowed vlan 10,20,30,40,50,60,100
+ switchport trunk allowed vlan 10,20,30,40,50,100
  switchport mode trunk
  channel-group 2 mode active
 !
 interface GigabitEthernet1/0/46
- switchport trunk allowed vlan 10,20,30,40,50,60,100
+ switchport trunk allowed vlan 10,20,30,40,50,100
  switchport mode trunk
  channel-group 2 mode active
 !
 interface GigabitEthernet1/0/47
- switchport trunk allowed vlan 10,20,30,40,50,60,100
+ switchport trunk allowed vlan 10,20,30,40,50,100
  switchport mode trunk
  channel-group 2 mode active
 !
@@ -504,10 +549,6 @@ interface Vlan40
 !
 interface Vlan50
  ip address 10.1.50.1 255.255.255.0
-!
-interface Vlan60
- description Gateway_Building_2
- ip address 10.1.60.1 255.255.255.0
 !
 interface Vlan100
  no ip address

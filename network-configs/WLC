@@ -258,11 +258,9 @@ qos max-dscp bronze 10
 qos max-dscp silver 0
 qos max-dscp gold 34
 qos max-dscp platinum 46
-radius acct add 1 10.1.10.10 1813 ascii ****
 radius auth add 1 10.1.10.10 1812 ascii ****
 radius callStationIdType macaddr
 radius auth callStationIdType ap-macaddr-ssid
-radius acct retransmit-timeout 1 5
 radius auth retransmit-timeout 1 5
 radius auth mgmt-retransmit-timeout 1 5
 radius fallback-test mode passive
@@ -469,7 +467,6 @@ wlan wgb prp disable 1
 wlan wgb prp disable 2
 wlan security wpa disable 2
 wlan radius_server auth add 1 1
-wlan radius_server acct add 1 1
 wlan security splash-page-web-redir disable 1
 wlan security splash-page-web-redir disable 2
 wlan security web-auth enable 2
