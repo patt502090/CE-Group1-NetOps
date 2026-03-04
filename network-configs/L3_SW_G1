@@ -36,7 +36,7 @@
 ! 
 ! 
 !
-! Last configuration change at 07:14:51 UTC Tue Mar 3 2026 by admin
+! Last configuration change at 03:37:05 UTC Wed Mar 4 2026 by admin
 !
 version 17.9
 service timestamps debug datetime msec
@@ -117,6 +117,27 @@ vtp version 1
 !
 !
 !
+!
+!
+flow record NETFLOW-RECORD
+ match ipv4 source address
+ match ipv4 destination address
+ match transport source-port
+ match transport destination-port
+ match ipv4 protocol
+ collect counter bytes long
+ collect counter packets long
+!
+!
+flow exporter NETFLOW-EXPORT
+ destination 10.1.10.20
+ transport udp 2055
+!
+!
+flow monitor NETFLOW-MONITOR
+ exporter NETFLOW-EXPORT
+ cache timeout active 60
+ record NETFLOW-RECORD
 !
 !
 crypto pki trustpoint SLA-TrustPoint
@@ -524,15 +545,21 @@ interface Vlan1
  ip address 10.1.1.1 255.255.255.252
 !
 interface Vlan10
+ ip flow monitor NETFLOW-MONITOR input
+ ip flow monitor NETFLOW-MONITOR output
  ip address 10.1.10.1 255.255.255.0
 !
 interface Vlan20
+ ip flow monitor NETFLOW-MONITOR input
+ ip flow monitor NETFLOW-MONITOR output
  ip address 10.1.20.2 255.255.255.0
 !
 interface Vlan30
  ip address 10.1.30.1 255.255.255.0
 !
 interface Vlan40
+ ip flow monitor NETFLOW-MONITOR input
+ ip flow monitor NETFLOW-MONITOR output
  no ip address
 !
 interface Vlan50
@@ -540,9 +567,13 @@ interface Vlan50
 !
 interface Vlan60
  description Gateway_Building_2
+ ip flow monitor NETFLOW-MONITOR input
+ ip flow monitor NETFLOW-MONITOR output
  ip address 10.1.60.1 255.255.255.0
 !
 interface Vlan100
+ ip flow monitor NETFLOW-MONITOR input
+ ip flow monitor NETFLOW-MONITOR output
  no ip address
 !
 ip http server
@@ -572,6 +603,7 @@ logging host 10.1.10.1
 logging host 10.1.10.10
 logging host 172.31.0.102
 logging host 10.1.10.30
+logging host 10.1.10.30 transport udp port 5140
 !
 snmp-server group G1_ADMIN_GRP v3 priv read ALL write ALL notify ALL 
 snmp-server group G1_ADMIN_GRP v3 priv context G1_L3_SW_DEVICE_CTX notify ALL 
