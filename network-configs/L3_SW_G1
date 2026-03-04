@@ -36,7 +36,7 @@
 ! 
 ! 
 !
-! Last configuration change at 14:14:08 UTC Wed Mar 4 2026 by admin
+! Last configuration change at 16:24:49 UTC Wed Mar 4 2026 by admin
 !
 version 17.9
 service timestamps debug datetime msec
@@ -606,6 +606,7 @@ ip access-list extended VLAN10-IN
  40 permit ip any any
 ip access-list extended VLAN20-IN
  10 permit ip any host 10.1.1.2
+ 15 permit ip 10.1.20.0 0.0.0.255 10.1.10.0 0.0.0.255
  20 deny ip any 10.1.0.0 0.0.255.255
  30 permit ip any any
 !
