@@ -1,0 +1,304 @@
+<!-- Local rules -->
+<!-- Copyright (C) 2015, Wazuh Inc. -->
+
+<!-- ===== Syslog Relay base rule ===== -->
+<group name="syslog-relay,">
+  <rule id="100100" level="3">
+    <decoded_as>syslog-relay-srcip</decoded_as>
+    <description>Syslog relay - Generic message</description>
+  </rule>
+</group>
+
+<!-- ===== L3 Switch 10.1.50.1 ===== -->
+<group name="cisco,l3switch,syslog,">
+
+  <rule id="100200" level="3">
+    <decoded_as>cisco-l3switch</decoded_as>
+    <description>Cisco L3 Switch (10.1.50.1) - Generic log</description>
+  </rule>
+
+  <rule id="100201" level="8">
+    <if_sid>100200</if_sid>
+    <match>%LINK-3-UPDOWN</match>
+    <description>Cisco L3 Switch (10.1.50.1) - Interface state change</description>
+  </rule>
+
+  <rule id="100202" level="10">
+    <if_sid>100200</if_sid>
+    <match>%OSPF-|%EIGRP-|%BGP-</match>
+    <description>Cisco L3 Switch (10.1.50.1) - Routing protocol event</description>
+  </rule>
+
+  <rule id="100203" level="8">
+    <if_sid>100200</if_sid>
+    <match>%HSRP-|%VRRP-</match>
+    <description>Cisco L3 Switch (10.1.50.1) - FHRP event</description>
+  </rule>
+
+  <rule id="100204" level="5">
+    <if_sid>100200</if_sid>
+    <match>%SYS-5-CONFIG_I</match>
+    <description>Cisco L3 Switch (10.1.50.1) - Configuration changed</description>
+  </rule>
+
+  <rule id="100205" level="8">
+    <if_sid>100200</if_sid>
+    <match>%SEC_LOGIN-4-LOGIN_FAILED</match>
+    <description>Cisco L3 Switch (10.1.50.1) - Login failed</description>
+  </rule>
+
+  <rule id="100206" level="5">
+    <if_sid>100200</if_sid>
+    <match>%LINEPROTO-5-UPDOWN</match>
+    <description>Cisco L3 Switch (10.1.50.1) - Line protocol state change</description>
+  </rule>
+
+</group>
+
+<!-- ===== L2 Switch 10.1.50.2 (existing) ===== -->
+<group name="cisco,l2switch,syslog,">
+
+  <rule id="100150" level="3">
+    <decoded_as>cisco-l2switch</decoded_as>
+    <description>Cisco L2 Switch (10.1.50.2) - Generic log</description>
+  </rule>
+
+  <rule id="100151" level="8">
+    <if_sid>100150</if_sid>
+    <match>%LINK-3-UPDOWN</match>
+    <description>Cisco L2 Switch (10.1.50.2) - Interface state change</description>
+  </rule>
+
+  <rule id="100152" level="5">
+    <if_sid>100150</if_sid>
+    <match>%SYS-5-CONFIG_I</match>
+    <description>Cisco L2 Switch (10.1.50.2) - Configuration changed</description>
+  </rule>
+
+</group>
+
+<!-- ===== WLC 10.1.50.10 ===== -->
+<group name="cisco,wlc,syslog,">
+
+  <rule id="100210" level="3">
+    <decoded_as>cisco-wlc</decoded_as>
+    <description>Cisco WLC (10.1.50.10) - Generic log</description>
+  </rule>
+
+  <rule id="100211" level="5">
+    <if_sid>100210</if_sid>
+    <match>%DOT1X-|%IEEE_CAPWAP-</match>
+    <description>Cisco WLC (10.1.50.10) - 802.1X/CAPWAP event</description>
+  </rule>
+
+  <rule id="100212" level="8">
+    <if_sid>100210</if_sid>
+    <match>%APF-4-|%APF-3-</match>
+    <description>Cisco WLC (10.1.50.10) - AP event (warning/error)</description>
+  </rule>
+
+  <rule id="100213" level="5">
+    <if_sid>100210</if_sid>
+    <match>%CLIENT_ORCH_LOG-</match>
+    <description>Cisco WLC (10.1.50.10) - Client association event</description>
+  </rule>
+
+  <rule id="100214" level="10">
+    <if_sid>100210</if_sid>
+    <match>%WIDS-|%IDS-</match>
+    <description>Cisco WLC (10.1.50.10) - Wireless IDS alert</description>
+  </rule>
+
+  <rule id="100215" level="8">
+    <if_sid>100210</if_sid>
+    <match>Rogue AP</match>
+    <description>Cisco WLC (10.1.50.10) - Rogue AP detected</description>
+  </rule>
+
+  <rule id="100216" level="5">
+    <if_sid>100210</if_sid>
+    <match>%SYS-5-CONFIG_I</match>
+    <description>Cisco WLC (10.1.50.10) - Configuration changed</description>
+  </rule>
+
+  <rule id="100217" level="5">
+    <if_sid>100210</if_sid>
+    <match>%LINK-3-UPDOWN</match>
+    <description>Cisco WLC (10.1.50.10) - Interface state change</description>
+  </rule>
+
+</group>
+
+<!-- ===== EWC 10.1.50.11 ===== -->
+<group name="cisco,ewc,syslog,">
+
+  <rule id="100220" level="3">
+    <decoded_as>cisco-ewc</decoded_as>
+    <description>Cisco EWC (10.1.50.11) - Generic log</description>
+  </rule>
+
+  <rule id="100221" level="5">
+    <if_sid>100220</if_sid>
+    <match>%DOT1X-|%IEEE_CAPWAP-</match>
+    <description>Cisco EWC (10.1.50.11) - 802.1X/CAPWAP event</description>
+  </rule>
+
+  <rule id="100222" level="8">
+    <if_sid>100220</if_sid>
+    <match>%APF-4-|%APF-3-</match>
+    <description>Cisco EWC (10.1.50.11) - AP event (warning/error)</description>
+  </rule>
+
+  <rule id="100223" level="5">
+    <if_sid>100220</if_sid>
+    <match>%CLIENT_ORCH_LOG-</match>
+    <description>Cisco EWC (10.1.50.11) - Client association event</description>
+  </rule>
+
+  <rule id="100224" level="10">
+    <if_sid>100220</if_sid>
+    <match>%WIDS-|%IDS-</match>
+    <description>Cisco EWC (10.1.50.11) - Wireless IDS alert</description>
+  </rule>
+
+  <rule id="100225" level="5">
+    <if_sid>100220</if_sid>
+    <match>%SYS-5-CONFIG_I</match>
+    <description>Cisco EWC (10.1.50.11) - Configuration changed</description>
+  </rule>
+
+  <rule id="100226" level="5">
+    <if_sid>100220</if_sid>
+    <match>%LINK-3-UPDOWN</match>
+    <description>Cisco EWC (10.1.50.11) - Interface state change</description>
+  </rule>
+
+</group>
+
+<!-- ===== Samba AD DC (10.1.10.20 — dc1.group1.corp) ===== -->
+<group name="samba,authentication,">
+
+  <!-- Samba Auth Audit — base rule -->
+  <rule id="100300" level="3">
+    <decoded_as>samba-auth-audit</decoded_as>
+    <description>Samba AD - Authentication event</description>
+  </rule>
+
+  <!-- Samba Auth success (NT_STATUS_OK) -->
+  <rule id="100301" level="3">
+    <if_sid>100300</if_sid>
+    <match>NT_STATUS_OK</match>
+    <description>Samba AD (dc1.group1.corp) - Authentication success</description>
+  </rule>
+
+  <!-- Samba Auth failure -->
+  <rule id="100302" level="5">
+    <if_sid>100300</if_sid>
+    <match>NT_STATUS_WRONG_PASSWORD|NT_STATUS_NO_SUCH_USER|NT_STATUS_LOGON_FAILURE</match>
+    <description>Samba AD (dc1.group1.corp) - Authentication failure</description>
+  </rule>
+
+  <!-- Samba Account locked out -->
+  <rule id="100303" level="10">
+    <if_sid>100300</if_sid>
+    <match>NT_STATUS_ACCOUNT_LOCKED_OUT</match>
+    <description>Samba AD (dc1.group1.corp) - Account locked out</description>
+  </rule>
+
+  <!-- Samba Brute force — 5 auth failures in 60 seconds -->
+  <rule id="100304" level="10" frequency="5" timeframe="60">
+    <if_matched_sid>100302</if_matched_sid>
+    <same_source_ip />
+    <description>Samba AD (dc1.group1.corp) - Possible brute force attack (5 failures in 60s)</description>
+    <mitre>
+      <id>T1110</id>
+    </mitre>
+  </rule>
+
+  <!-- Samba SMB connection -->
+  <rule id="100305" level="3">
+    <decoded_as>samba-connect</decoded_as>
+    <description>Samba AD (dc1.group1.corp) - SMB share connection</description>
+  </rule>
+
+  <!-- Samba Kerberos events -->
+  <rule id="100306" level="3">
+    <decoded_as>samba-kdc</decoded_as>
+    <description>Samba AD (dc1.group1.corp) - Kerberos KDC event</description>
+  </rule>
+
+  <!-- Samba Kerberos client not found -->
+  <rule id="100307" level="5">
+    <if_sid>100306</if_sid>
+    <match>CLIENT_NOT_FOUND</match>
+    <description>Samba AD (dc1.group1.corp) - Kerberos client not found</description>
+  </rule>
+
+  <!-- Samba ntlm_auth (used by FreeRADIUS) -->
+  <rule id="100310" level="3">
+    <decoded_as>samba-ntlm-auth</decoded_as>
+    <description>Samba AD (dc1.group1.corp) - NTLM auth request</description>
+  </rule>
+
+  <rule id="100311" level="3">
+    <if_sid>100310</if_sid>
+    <match>succeeded</match>
+    <description>Samba AD (dc1.group1.corp) - NTLM auth succeeded (RADIUS/802.1X)</description>
+  </rule>
+
+  <rule id="100312" level="5">
+    <if_sid>100310</if_sid>
+    <match>failed</match>
+    <description>Samba AD (dc1.group1.corp) - NTLM auth failed (RADIUS/802.1X)</description>
+  </rule>
+
+</group>
+
+<!-- ===== FreeRADIUS (radius.group1.corp) ===== -->
+<group name="freeradius,authentication,radius,">
+
+  <!-- RADIUS Auth success -->
+  <rule id="100400" level="3">
+    <decoded_as>freeradius-auth-ok</decoded_as>
+    <description>FreeRADIUS - Authentication success</description>
+  </rule>
+
+  <!-- RADIUS Auth failure -->
+  <rule id="100401" level="5">
+    <decoded_as>freeradius-auth-fail</decoded_as>
+    <description>FreeRADIUS - Authentication failure</description>
+  </rule>
+
+  <!-- RADIUS Invalid user -->
+  <rule id="100402" level="8">
+    <decoded_as>freeradius-auth-invalid</decoded_as>
+    <description>FreeRADIUS - Invalid/unknown user attempted authentication</description>
+  </rule>
+
+  <!-- RADIUS Brute force — 5 failures in 60 seconds (same user) -->
+  <rule id="100403" level="10" frequency="5" timeframe="60">
+    <if_matched_sid>100401</if_matched_sid>
+    <same_field>srcuser</same_field>
+    <description>FreeRADIUS - Possible brute force (5 auth failures in 60s for same user)</description>
+    <mitre>
+      <id>T1110</id>
+    </mitre>
+  </rule>
+
+  <!-- RADIUS Multiple invalid users — 5 different invalid users in 120 seconds -->
+  <rule id="100404" level="10" frequency="5" timeframe="120">
+    <if_matched_sid>100402</if_matched_sid>
+    <description>FreeRADIUS - Multiple invalid user attempts (possible user enumeration)</description>
+    <mitre>
+      <id>T1110.001</id>
+    </mitre>
+  </rule>
+
+  <!-- RADIUS Auth failure from unknown MAC -->
+  <rule id="100405" level="8">
+    <if_sid>100401</if_sid>
+    <match>mschap: External script failed</match>
+    <description>FreeRADIUS - MSCHAPv2 auth failure (AD password mismatch)</description>
+  </rule>
+
+</group>

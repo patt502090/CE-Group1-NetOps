@@ -1,0 +1,53 @@
+# /etc/freeradius/3.0/mods-available/mschap
+# MSCHAPv2 Authentication via ntlm_auth → Samba4 AD DC
+#
+# Server: rasberrypi-888 (10.1.10.10)
+# Samba4 AD: raspberrypi (10.1.10.20) — GROUP1.CORP
+# Synced from server: 2026-03-03
+#
+# นี่คือ module หลักที่ทำ authentication จริง:
+# FreeRADIUS → ntlm_auth → winbind pipe → Samba4 AD DC
+
+mschap {
+    # ===== MPPE Encryption (required for WPA2-Enterprise) =====
+    use_mppe = yes
+    require_encryption = yes
+    require_strong = yes
+
+    # Allow DOMAIN\username format
+    with_ntdomain_hack = yes
+
+    # ===== ntlm_auth Integration =====
+    # เรียก ntlm_auth binary ที่เชื่อมต่อ Samba4 AD ผ่าน winbind pipe
+    # ต้องมี winbindd running (เป็น child ของ samba-ad-dc บน .20)
+    #
+    # FreeRADIUS (.10) ต้อง access winbind socket ของ Samba4 (.20)
+    # ปกติ .10 จะ join domain หรือ mount pipe ผ่าน network
+    ntlm_auth = "/usr/bin/ntlm_auth --request-nt-key --domain=GROUP1 --username=%{%{Stripped-User-Name}:-%{%{User-Name}:-None}} --challenge=%{%{mschap:Challenge}:-00} --nt-response=%{%{mschap:NT-Response}:-00}"
+
+    # Alternative format (commented out):
+    # ntlm_auth = "/usr/bin/ntlm_auth --request-nt-key --username=%{%{mschap:User-Name}:-%{User-Name}} --domain=%{%{mschap:NT-Domain}:-GROUP1} --challenge=%{mschap:Challenge:-00} --nt-response=%{mschap:NT-Response:-00}"
+
+    # Timeout (seconds) — default 10
+    # ntlm_auth_timeout = 10
+
+    # ===== Connection Pool (for winbind direct mode) =====
+    pool {
+        start = ${thread[pool].start_servers}
+        min = ${thread[pool].min_spare_servers}
+        max = ${thread[pool].max_servers}
+        spare = ${thread[pool].max_spare_servers}
+        uses = 0
+        retry_delay = 30
+        lifetime = 86400
+        cleanup_interval = 300
+        idle_timeout = 600
+    }
+
+    # ===== Password Change (disabled) =====
+    passchange {
+        # ntlm_auth = "/usr/bin/ntlm_auth --helper-protocol=ntlm-change-password-1"
+        # ntlm_auth_username = "username: %{mschap:User-Name}"
+        # ntlm_auth_domain = "nt-domain: %{mschap:NT-Domain}"
+    }
+}

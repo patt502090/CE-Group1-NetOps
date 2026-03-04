@@ -1,0 +1,108 @@
+<!-- Local Decoders -->
+<!-- Copyright (C) 2015, Wazuh Inc. -->
+
+<!-- Extract SRCIP from syslog relay messages -->
+<decoder name="syslog-relay-srcip">
+  <prematch>^SRCIP=</prematch>
+  <regex>^SRCIP=(\S+) (.+)</regex>
+  <order>srcip, extra_data</order>
+</decoder>
+
+<!-- L3 Switch 10.1.50.1 -->
+<decoder name="cisco-l3switch">
+  <parent>syslog-relay-srcip</parent>
+  <prematch>^SRCIP=10.1.50.1 </prematch>
+  <regex>^SRCIP=(\S+) (\S+): (.+)</regex>
+  <order>srcip, id, extra_data</order>
+</decoder>
+
+<!-- L2 Switch 10.1.50.2 (existing) -->
+<decoder name="cisco-l2switch">
+  <parent>syslog-relay-srcip</parent>
+  <prematch>^SRCIP=10.1.50.2 </prematch>
+  <regex>^SRCIP=(\S+) (\S+): (.+)</regex>
+  <order>srcip, id, extra_data</order>
+</decoder>
+
+<!-- WLC 10.1.50.10 -->
+<decoder name="cisco-wlc">
+  <parent>syslog-relay-srcip</parent>
+  <prematch>^SRCIP=10.1.50.10 </prematch>
+  <regex>^SRCIP=(\S+) (\S+): (.+)</regex>
+  <order>srcip, id, extra_data</order>
+</decoder>
+
+<!-- EWC 10.1.50.11 -->
+<decoder name="cisco-ewc">
+  <parent>syslog-relay-srcip</parent>
+  <prematch>^SRCIP=10.1.50.11 </prematch>
+  <regex>^SRCIP=(\S+) (\S+): (.+)</regex>
+  <order>srcip, id, extra_data</order>
+</decoder>
+
+<!-- ===== Samba AD DC (10.1.10.20) ===== -->
+
+<!-- Samba smbd auth: successful logon -->
+<!-- Example: [2026/03/02 10:15:30, 2] smbd/service.c:250(make_connection_snum) 10.1.10.50 (ipv4:10.1.10.50:49152) connect to service IPC$ initially as user john (uid=10001, gid=10001) -->
+<decoder name="samba-connect">
+  <prematch>connect to service </prematch>
+  <regex offset="after_prematch">(\S+) initially as user (\S+) </regex>
+  <order>url, srcuser</order>
+</decoder>
+
+<!-- Samba auth audit logs -->
+<!-- Example: Auth: [SMB2,(null)] user [GROUP1]\[john] at [Mon, 02 Mar 2026 10:15:30] with [NTLMv2] status [NT_STATUS_OK] -->
+<decoder name="samba-auth-audit">
+  <prematch>^Auth: </prematch>
+  <regex offset="after_prematch">(\S+) user (\S+) at </regex>
+  <order>protocol, srcuser</order>
+</decoder>
+
+<decoder name="samba-auth-audit-status">
+  <parent>samba-auth-audit</parent>
+  <regex>status (\S+)</regex>
+  <order>status</order>
+</decoder>
+
+<!-- Samba Kerberos auth (KDC) -->
+<!-- Example: kdc.c:process_as_req() CLIENT_NOT_FOUND: john@GROUP1.CORP from IP 10.1.10.50 -->
+<decoder name="samba-kdc">
+  <prematch>kdc.c:</prematch>
+  <regex>(\S+): (\S+)@(\S+) from IP (\S+)</regex>
+  <order>status, srcuser, extra_data, srcip</order>
+</decoder>
+
+<!-- Samba winbind ntlm_auth (used by FreeRADIUS) -->
+<!-- Example: ntlm_auth: request for user [GROUP1]\[john] succeeded -->
+<!-- Example: ntlm_auth: request for user [GROUP1]\[john] failed -->
+<decoder name="samba-ntlm-auth">
+  <prematch>ntlm_auth: </prematch>
+  <regex offset="after_prematch">request for user (\S+) (\S+)</regex>
+  <order>srcuser, status</order>
+</decoder>
+
+<!-- ===== FreeRADIUS (10.1.10.10 or local) ===== -->
+
+<!-- FreeRADIUS Auth success -->
+<!-- Example: Login OK: [john] (from client WLC port 0 cli 00-11-22-33-44-55) -->
+<decoder name="freeradius-auth-ok">
+  <prematch>^Login OK: </prematch>
+  <regex offset="after_prematch">(\S+) .from client (\S+) port (\S+) cli (\S+).</regex>
+  <order>srcuser, extra_data, srcport, srcip</order>
+</decoder>
+
+<!-- FreeRADIUS Auth fail -->
+<!-- Example: Login incorrect (mschap: External script failed): [john] (from client WLC port 0 cli 00-11-22-33-44-55) -->
+<decoder name="freeradius-auth-fail">
+  <prematch>^Login incorrect</prematch>
+  <regex offset="after_prematch">(\S+): (\S+) .from client (\S+) port (\S+) cli (\S+).</regex>
+  <order>status, srcuser, extra_data, srcport, srcip</order>
+</decoder>
+
+<!-- FreeRADIUS Auth reject (invalid user) -->
+<!-- Example: Invalid user (No such user): [baduser] (from client WLC port 0 cli 00-11-22-33-44-55) -->
+<decoder name="freeradius-auth-invalid">
+  <prematch>^Invalid user</prematch>
+  <regex offset="after_prematch">(\S+): (\S+) .from client (\S+) port (\S+) cli (\S+).</regex>
+  <order>status, srcuser, extra_data, srcport, srcip</order>
+</decoder>
