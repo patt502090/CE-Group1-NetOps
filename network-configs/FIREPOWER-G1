@@ -30,9 +30,15 @@ interface Port-channel1.1
 !
 interface Port-channel1.20
  vlan 20
- nameif employee
+ nameif privileged
  security-level 0
  ip address 10.1.20.1 255.255.255.0 
+!
+interface Port-channel1.30
+ vlan 30
+ nameif corporate
+ security-level 0
+ ip address 10.1.30.1 255.255.255.0 
 !
 interface Port-channel1.40
  vlan 40
@@ -182,6 +188,8 @@ object network |10.0.1.1
  host 10.0.1.1
 object network |10.1.20.1
  fqdn 10.1.20.1 id 1002
+object network Privileged-Network
+ subnet 10.1.20.0 255.255.255.0
 object network MGMT-Network
  subnet 10.1.50.0 255.255.255.0
 object network MacMini_Honeypot
@@ -200,8 +208,8 @@ object network |172.31.0.102
  host 172.31.0.102
 object network portal.group1.corp
  fqdn portal.group1.corp id 1001
-object network Employee-Network
- subnet 10.1.20.0 255.255.255.0
+object network Corporate-Network
+ subnet 10.1.30.0 255.255.255.0
 object-group network IPv4-Private-All-RFC1918
  network-object object IPv4-Private-10.0.0.0-8
  network-object object IPv4-Private-172.16.0.0-12
@@ -219,6 +227,8 @@ object-group service |acSvcg-268435460
 object-group network |acDestNwg-268435460
  network-object object DMZ-Network
  network-object object MacMini_Honeypot
+object-group service |acSvcg-268435474
+ service-object ip 
 object-group service |acSvcg-268435468
  service-object ip 
 object-group service |acSvcg-268435467
@@ -230,20 +240,18 @@ object-group service |acSvcg-268435459
 object-group service |acSvcg-268435473
  service-object icmp 
  service-object icmp6 
-object-group service |acSvcg-268435474
- service-object ip 
 access-group NGFW_ONBOX_ACL global
 access-list NGFW_ONBOX_ACL remark rule-id 268435471: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 268435471: L5 RULE: Allow-DNS-For-Employee
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435471 ifc employee object Employee-Network any rule-id 268435471 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435471 ifc inside object Employee-Network any rule-id 268435471 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435471 ifc inside object Privileged-Network any rule-id 268435471 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435471 ifc privileged object Privileged-Network any rule-id 268435471 
 access-list NGFW_ONBOX_ACL remark rule-id 268435461: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 268435461: L5 RULE: Allow-Prime-SNMP
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435461 ifc outside object SNMP_Server ifc inside object inside-lan rule-id 268435461 event-log both 
 access-list NGFW_ONBOX_ACL remark rule-id 268435460: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 268435460: L5 RULE: Allow_Outside_to_DMZ
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435460 ifc employee any ifc dmz object-group |acDestNwg-268435460 rule-id 268435460 event-log both 
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435460 ifc outside any ifc dmz object-group |acDestNwg-268435460 rule-id 268435460 event-log both 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435460 ifc privileged any ifc dmz object-group |acDestNwg-268435460 rule-id 268435460 event-log both 
 access-list NGFW_ONBOX_ACL remark rule-id 268435474: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 268435474: L7 RULE: block HR group
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435474 any ifc outside any rule-id 268435474 
@@ -258,21 +266,22 @@ access-list NGFW_ONBOX_ACL remark rule-id 268435469: L5 RULE: Allow-All-for-MGMT
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435469 ifc inside object MGMT-Network any rule-id 268435469 
 access-list NGFW_ONBOX_ACL remark rule-id 268435459: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 268435459: L5 RULE: ALLOW-INTERNET
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc corporate any ifc outside any rule-id 268435459 event-log both 
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc dmz any ifc outside any rule-id 268435459 event-log both 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc employee any ifc outside any rule-id 268435459 event-log both 
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc guest any ifc outside any rule-id 268435459 event-log both 
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc inside any ifc outside any rule-id 268435459 event-log both 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc privileged any ifc outside any rule-id 268435459 event-log both 
 access-list NGFW_ONBOX_ACL remark rule-id 268435473: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 268435473: L5 RULE: Allow-Internal-Ping
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc dmz any ifc dmz any rule-id 268435473 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc dmz any ifc employee any rule-id 268435473 
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc dmz any ifc inside any rule-id 268435473 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc employee any ifc dmz any rule-id 268435473 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc employee any ifc employee any rule-id 268435473 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc employee any ifc inside any rule-id 268435473 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc dmz any ifc privileged any rule-id 268435473 
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc inside any ifc dmz any rule-id 268435473 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc inside any ifc employee any rule-id 268435473 
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc inside any ifc inside any rule-id 268435473 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc inside any ifc privileged any rule-id 268435473 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc privileged any ifc dmz any rule-id 268435473 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc privileged any ifc inside any rule-id 268435473 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc privileged any ifc privileged any rule-id 268435473 
 access-list NGFW_ONBOX_ACL remark rule-id 1: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 1: L5 RULE: DefaultActionRule
 access-list NGFW_ONBOX_ACL advanced deny ip any any rule-id 1 event-log both 
@@ -284,7 +293,8 @@ logging host inside 10.1.10.30
 logging permit-hostdown
 mtu inside-lag 1500
 mtu inside 1500
-mtu employee 1500
+mtu privileged 1500
+mtu corporate 1500
 mtu guest 1500
 mtu dmz 1500
 mtu outside 1500
@@ -292,7 +302,8 @@ mtu management 1500
 no failover
 failover replication http
 monitor-interface inside
-monitor-interface employee
+monitor-interface privileged
+monitor-interface corporate
 monitor-interface guest
 monitor-interface dmz
 no monitor-interface service-module 
@@ -308,10 +319,12 @@ object network inside-lan
  nat (inside,outside) dynamic interface
 object network DMZ-LAN
  nat (dmz,outside) dynamic interface
+object network Privileged-Network
+ nat (privileged,outside) dynamic interface
 object network Guest-Network
  nat (guest,outside) dynamic interface
-object network Employee-Network
- nat (employee,outside) dynamic interface
+object network Corporate-Network
+ nat (corporate,outside) dynamic interface
 
 route outside 0.0.0.0 0.0.0.0 10.0.1.1 1
 route inside 10.1.0.0 255.255.0.0 10.1.1.1 1
@@ -334,14 +347,16 @@ ip-client management
 ip-client management ipv6
 ip-client outside
 ip-client outside ipv6
-ip-client employee
-ip-client employee ipv6
 ip-client dmz
 ip-client dmz ipv6
+ip-client corporate
+ip-client corporate ipv6
 ip-client inside
 ip-client inside ipv6
 ip-client guest
 ip-client guest ipv6
+ip-client privileged
+ip-client privileged ipv6
 snmp-server group AUTH v3 auth 
 snmp-server group PRIV v3 priv 
 snmp-server group NOAUTH v3 noauth 
@@ -403,7 +418,6 @@ policy-map global_policy
 !
 service-policy global_policy global
 prompt hostname context 
-captive-portal global
 call-home
  profile CiscoTAC-1
   no active
@@ -417,5 +431,5 @@ call-home
   subscribe-to-alert-group telemetry periodic daily
 snort preserve-connection
 snort multichannel-lb enable
-Cryptochecksum:43bb00b2b7953f1540eaea4409fcd622
+Cryptochecksum:43cd0ee312f5793a691987615ed1a9fa
 : end
