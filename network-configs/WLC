@@ -470,7 +470,6 @@ wlan wgb prp disable 2
 wlan security wpa disable 2
 wlan radius_server auth add 1 1
 wlan radius_server acct add 1 1
-wlan radius_server overwrite-interface enable 1
 wlan security splash-page-web-redir disable 1
 wlan security splash-page-web-redir disable 2
 wlan security web-auth enable 2
