@@ -240,6 +240,8 @@ object-group service |acSvcg-268435459
 object-group service |acSvcg-268435473
  service-object icmp 
  service-object icmp6 
+object-group service |acSvcg-268435458
+ service-object ip 
 access-group NGFW_ONBOX_ACL global
 access-list NGFW_ONBOX_ACL remark rule-id 268435471: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 268435471: L5 RULE: Allow-DNS-For-Employee
@@ -282,6 +284,24 @@ access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc in
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc privileged any ifc dmz any rule-id 268435473 
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc privileged any ifc inside any rule-id 268435473 
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc privileged any ifc privileged any rule-id 268435473 
+access-list NGFW_ONBOX_ACL remark rule-id 268435458: ACCESS POLICY: NGFW_Access_Policy
+access-list NGFW_ONBOX_ACL remark rule-id 268435458: L5 RULE: xxx
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc corporate any ifc corporate any rule-id 268435458 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc corporate any ifc guest any rule-id 268435458 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc corporate any ifc inside any rule-id 268435458 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc corporate any ifc privileged any rule-id 268435458 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc guest any ifc corporate any rule-id 268435458 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc guest any ifc guest any rule-id 268435458 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc guest any ifc inside any rule-id 268435458 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc guest any ifc privileged any rule-id 268435458 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc inside any ifc corporate any rule-id 268435458 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc inside any ifc guest any rule-id 268435458 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc inside any ifc inside any rule-id 268435458 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc inside any ifc privileged any rule-id 268435458 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc privileged any ifc corporate any rule-id 268435458 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc privileged any ifc guest any rule-id 268435458 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc privileged any ifc inside any rule-id 268435458 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc privileged any ifc privileged any rule-id 268435458 
 access-list NGFW_ONBOX_ACL remark rule-id 1: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 1: L5 RULE: DefaultActionRule
 access-list NGFW_ONBOX_ACL advanced deny ip any any rule-id 1 event-log both 
@@ -431,5 +451,5 @@ call-home
   subscribe-to-alert-group telemetry periodic daily
 snort preserve-connection
 snort multichannel-lb enable
-Cryptochecksum:43cd0ee312f5793a691987615ed1a9fa
+Cryptochecksum:07eb4db1b2b1a5254c784d150e39b998
 : end
