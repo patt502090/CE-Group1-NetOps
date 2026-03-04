@@ -143,13 +143,13 @@ interface address dynamic-interface guest 10.1.40.10 255.255.255.0 10.1.40.1
 interface address management 10.1.50.10 255.255.255.0 10.1.50.1
 interface address dynamic-interface privileged 10.1.20.10 255.255.255.0 10.1.20.1
 interface address virtual 192.0.2.1
-interface dhcp dynamic-interface corporate primary 10.1.30.1
+interface dhcp dynamic-interface corporate primary 10.1.30.2
 interface dhcp dynamic-interface corporate option-6-opendns disable
-interface dhcp dynamic-interface guest primary 10.1.40.1
+interface dhcp dynamic-interface guest primary 10.1.40.2
 interface dhcp dynamic-interface guest option-6-opendns disable
 interface dhcp  management primary 10.1.50.1
 interface dhcp dynamic-interface management option-6-opendns disable
-interface dhcp dynamic-interface privileged primary 10.1.20.1
+interface dhcp dynamic-interface privileged primary 10.1.20.2
 interface dhcp dynamic-interface privileged option-6-opendns disable
 interface vlan corporate 30
 interface vlan guest 40
