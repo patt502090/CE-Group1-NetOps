@@ -36,7 +36,7 @@
 ! 
 ! 
 !
-! Last configuration change at 16:24:49 UTC Wed Mar 4 2026 by admin
+! Last configuration change at 17:45:00 UTC Wed Mar 4 2026 by admin
 !
 version 17.9
 service timestamps debug datetime msec
@@ -561,6 +561,7 @@ interface Vlan10
  ip flow monitor NETFLOW-MONITOR input
  ip flow monitor NETFLOW-MONITOR output
  ip address 10.1.10.1 255.255.255.0
+ ip policy route-map ASYM-FIX
 !
 interface Vlan20
  ip flow monitor NETFLOW-MONITOR input
@@ -577,24 +578,38 @@ interface Vlan40
 !
 interface Vlan50
  ip address 10.1.50.1 255.255.255.0
+ ip policy route-map ASYM-FIX
 !
 interface Vlan60
  description Gateway_Building_2
  ip flow monitor NETFLOW-MONITOR input
  ip flow monitor NETFLOW-MONITOR output
  ip address 10.1.60.1 255.255.255.0
+ ip policy route-map ASYM-FIX
 !
 interface Vlan100
  ip flow monitor NETFLOW-MONITOR input
  ip flow monitor NETFLOW-MONITOR output
  no ip address
 !
+ip local policy route-map ASYM-FIX
 ip http server
 ip http authentication local
 ip http secure-server
 ip forward-protocol nd
 ip route 0.0.0.0 0.0.0.0 10.1.1.2
 !
+ip access-list extended RETURN-TO-FTD
+ 10 permit ip 10.1.10.0 0.0.0.255 10.1.20.0 0.0.0.255
+ 20 permit ip 10.1.10.0 0.0.0.255 10.1.30.0 0.0.0.255
+ 30 permit ip 10.1.10.0 0.0.0.255 10.1.40.0 0.0.0.255
+ 40 permit ip 10.1.10.0 0.0.0.255 10.1.100.0 0.0.0.255
+ 50 permit ip 10.1.50.0 0.0.0.255 10.1.20.0 0.0.0.255
+ 60 permit ip 10.1.50.0 0.0.0.255 10.1.30.0 0.0.0.255
+ 70 permit ip 10.1.50.0 0.0.0.255 10.1.40.0 0.0.0.255
+ 80 permit ip 10.1.60.0 0.0.0.255 10.1.20.0 0.0.0.255
+ 90 permit ip 10.1.60.0 0.0.0.255 10.1.30.0 0.0.0.255
+ 100 permit ip 10.1.60.0 0.0.0.255 10.1.40.0 0.0.0.255
 ip access-list extended VLAN10-IN
  10 remark === Allow MGMT ===
  10 permit ip 10.1.10.0 0.0.0.255 10.1.50.0 0.0.0.255
@@ -618,6 +633,10 @@ logging host 10.1.10.10
 logging host 172.31.0.102
 logging host 10.1.10.30
 logging host 10.1.10.30 transport udp port 5140
+!
+route-map ASYM-FIX permit 10 
+ match ip address RETURN-TO-FTD
+ set ip next-hop 10.1.1.2
 !
 snmp-server group G1_ADMIN_GRP v3 priv read ALL write ALL notify ALL 
 snmp-server group G1_ADMIN_GRP v3 priv context G1_L3_SW_DEVICE_CTX notify ALL 
