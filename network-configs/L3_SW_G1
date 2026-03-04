@@ -36,7 +36,7 @@
 ! 
 ! 
 !
-! Last configuration change at 04:56:43 UTC Wed Mar 4 2026 by admin
+! Last configuration change at 09:30:50 UTC Wed Mar 4 2026 by admin
 !
 version 17.9
 service timestamps debug datetime msec
@@ -560,7 +560,7 @@ interface Vlan30
 interface Vlan40
  ip flow monitor NETFLOW-MONITOR input
  ip flow monitor NETFLOW-MONITOR output
- no ip address
+ ip address 10.1.40.2 255.255.255.0
 !
 interface Vlan50
  ip address 10.1.50.1 255.255.255.0
