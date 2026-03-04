@@ -438,7 +438,6 @@ policy-map global_policy
 !
 service-policy global_policy global
 prompt hostname context 
-captive-portal global
 call-home
  profile CiscoTAC-1
   no active
@@ -452,5 +451,5 @@ call-home
   subscribe-to-alert-group telemetry periodic daily
 snort preserve-connection
 snort multichannel-lb enable
-Cryptochecksum:9a3880090c810d8da062a344ac9e158e
+Cryptochecksum:07eb4db1b2b1a5254c784d150e39b998
 : end
