@@ -1,0 +1,47 @@
+2026-03-04 21:05:37,725 [INFO] FTD auth OK — token expires in 1800s
+2026-03-04 21:06:16,770 [INFO] FTD auth OK — token expires in 1800s
+2026-03-04 21:06:16,784 [INFO] CLI> user-identity update user GROUP1\\winnie.p 10.1.20.100
+2026-03-04 21:06:16,800 [ERROR] Command failed: 422 {
+  "error" : {
+    "severity" : "ERROR",
+    "key" : "Validation",
+    "messages" : [ {
+      "description" : "Character \\,\\ not allowed in CLI Console.",
+      "code" : "cliCommandUnSupportedCharacters",
+      "location" : ""
+    } ]
+  }
+}
+2026-03-04 21:06:16,800 [ERROR] Push failed: ERROR: 422
+2026-03-04 21:09:20,440 [INFO] FTD auth OK — token expires in 1800s
+2026-03-04 21:09:20,441 [INFO] CLI> user-identity update user winnie.p 10.1.20.100
+2026-03-04 21:09:20,460 [ERROR] Command failed: 422 {
+  "error" : {
+    "severity" : "ERROR",
+    "key" : "Validation",
+    "messages" : [ {
+      "description" : "This command is not supported or not recognized. Command abbreviations are not allowed.",
+      "code" : "cliCommandNotSupported",
+      "location" : ""
+    } ]
+  }
+}
+2026-03-04 21:09:48,673 [INFO] FTD auth OK — token expires in 1800s
+2026-03-04 21:10:08,737 [INFO] FTD auth OK — token expires in 1800s
+2026-03-04 21:10:28,612 [INFO] FTD auth OK — token expires in 1800s
+2026-03-04 21:10:46,179 [INFO] FTD auth OK — token expires in 1800s
+2026-03-04 21:10:46,179 [INFO] CLI> show user-identity user all
+2026-03-04 21:10:46,193 [ERROR] Command failed: 422 {
+  "error" : {
+    "severity" : "ERROR",
+    "key" : "Validation",
+    "messages" : [ {
+      "description" : "This command is not supported or not recognized. Command abbreviations are not allowed.",
+      "code" : "cliCommandNotSupported",
+      "location" : ""
+    } ]
+  }
+}
+2026-03-04 21:25:52,316 [INFO] FTD auth OK — token expires in 1800s
+2026-03-04 21:26:07,646 [INFO] FTD auth OK — token expires in 1800s
+2026-03-04 21:26:40,072 [INFO] FTD auth OK — token expires in 1800s
