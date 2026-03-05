@@ -135,36 +135,36 @@ flexconnect group default-flex-group radius ap authority info Cisco A_ID
 flexconnect group default-flex-group http-proxy ip-address 0.0.0.0 http-proxy port 0
 flexconnect group default-flex-group template-vlan-map add none
 local-auth method fast server-key ****
-interface create corporate 30
-interface create guest 40
-interface create privileged 20
-interface address dynamic-interface corporate 10.1.30.10 255.255.255.0 10.1.30.1
-interface address dynamic-interface guest 10.1.40.10 255.255.255.0 10.1.40.1
+interface create guest-group-1 40
+interface create guest-staff-1 30
+interface create lanuser 20
+interface address dynamic-interface guest-group-1 10.1.40.10 255.255.255.0 10.1.40.1
+interface address dynamic-interface guest-staff-1 10.1.30.10 255.255.255.0 10.1.30.1
+interface address dynamic-interface lanuser 10.1.20.2 255.255.255.0 10.1.20.1
 interface address management 10.1.50.10 255.255.255.0 10.1.50.1
-interface address dynamic-interface privileged 10.1.20.10 255.255.255.0 10.1.20.1
 interface address virtual 192.0.2.1
-interface dhcp dynamic-interface corporate primary 10.1.30.2
-interface dhcp dynamic-interface corporate option-6-opendns disable
-interface dhcp dynamic-interface guest primary 10.1.40.2
-interface dhcp dynamic-interface guest option-6-opendns disable
+interface dhcp dynamic-interface guest-group-1 primary 10.1.40.1
+interface dhcp dynamic-interface guest-group-1 option-6-opendns disable
+interface dhcp dynamic-interface guest-staff-1 primary 10.1.30.1
+interface dhcp dynamic-interface guest-staff-1 option-6-opendns disable
+interface dhcp dynamic-interface lanuser primary 10.1.20.1
+interface dhcp dynamic-interface lanuser option-6-opendns disable
 interface dhcp  management primary 10.1.50.1
 interface dhcp dynamic-interface management option-6-opendns disable
-interface dhcp dynamic-interface privileged primary 10.1.20.2
-interface dhcp dynamic-interface privileged option-6-opendns disable
-interface vlan corporate 30
-interface vlan guest 40
+interface vlan guest-group-1 40
+interface vlan guest-staff-1 30
+interface vlan lanuser 20
 interface vlan management 50
-interface vlan privileged 20
-interface nasid none corporate
-interface nasid none guest
-interface nasid none privileged
+interface nasid none guest-group-1
+interface nasid none guest-staff-1
+interface nasid none lanuser
 nasid apgroup  default-group
 wlan nasid none 1
 wlan nasid none 2
-interface port corporate 13
-interface port guest 13
+interface port guest-group-1 13
+interface port guest-staff-1 13
+interface port lanuser 13
 interface port management 13
-interface port privileged 13
 mdns snooping disable
 mdns policy service-group create "default-mdns-policy" "Default Access Policy created by WLC"
 mdns policy service-group user-role add default-mdns-policy admin
@@ -205,8 +205,8 @@ load-balancing window 5
 wlan apgroup add default-group
 wlan apgroup qinq tagging eap-sim-aka default-group enable
 nmsp cipher-option high enable
-wlan apgroup interface-mapping add default-group 1 corporate
-wlan apgroup interface-mapping add default-group 2 guest
+wlan apgroup interface-mapping add default-group 1 guest-staff-1
+wlan apgroup interface-mapping add default-group 2 management
 wlan apgroup nac-snmp disable default-group 1
 wlan apgroup nac-snmp disable default-group 2
 logging syslog host 10.1.10.30
@@ -258,11 +258,9 @@ qos max-dscp bronze 10
 qos max-dscp silver 0
 qos max-dscp gold 34
 qos max-dscp platinum 46
-radius acct add 1 10.1.10.10 1813 ascii ****
 radius auth add 1 10.1.10.10 1812 ascii ****
 radius callStationIdType macaddr
 radius auth callStationIdType ap-macaddr-ssid
-radius acct retransmit-timeout 1 5
 radius auth retransmit-timeout 1 5
 radius auth mgmt-retransmit-timeout 1 5
 radius fallback-test mode passive
@@ -420,19 +418,21 @@ trapflags adjchannel-rogueap disable
 trapflags mesh excessive hop count disable
 trapflags mesh sec backhaul change disable
 trapflags mesh psk auth failure disable
-wlan create 1 "Group01-Corporate Enterprise" "Group01-Corporate Enterprise"
-wlan create 2 "Group01-Corporate Guest " "Group01-Corporate Guest "
+wlan create 1 "Group1 WiFi (802.1x)" "Group01 (802.1x)"
+wlan create 2 "Group01 WiFi " "Group01 WiFi "
 wlan nac snmp disable 1
 wlan nac snmp disable 2
 wlan nac radius disable 1
 wlan nac radius disable 2
-wlan interface 1 corporate
-wlan interface 2 guest
+wlan interface 1 guest-staff-1
 wlan multicast interface 1 disable
 wlan multicast interface 2 disable
 wlan aaa-override enable 1
 wlan band-select allow disable 1
 wlan band-select allow disable 2
+wlan custom-web sleep-client timeout 2 720
+wlan custom-web webauth-type customized 2
+wlan custom-web login-page login.html 2
 wlan exclusionlist 1 300
 wlan load-balance allow disable 1
 wlan load-balance allow disable 2
@@ -465,16 +465,16 @@ wlan wgb broadcast-tagging disable 1
 wlan wgb broadcast-tagging disable 2
 wlan wgb prp disable 1
 wlan wgb prp disable 2
+wlan security wpa disable 2
 wlan radius_server auth add 1 1
-wlan radius_server acct add 1 1
 wlan security splash-page-web-redir disable 1
 wlan security splash-page-web-redir disable 2
+wlan security web-auth enable 2
 wlan security wpa akm 802.1x enable 1
-wlan security wpa akm psk enable 2
 wlan security wpa akm cckm timestamp-tolerance  1000 1
 wlan security wpa akm cckm timestamp-tolerance  1000 2
 wlan security ft over-the-ds disable 1
-wlan security ft over-the-ds disable 2
+wlan security ft adaptive enable 2
 wlan security wpa gtk-random disable 1
 wlan security wpa gtk-random disable 2
 wlan security pmf association-comeback 1 1
@@ -489,7 +489,6 @@ wlan profiling radius http disable 1
 wlan profiling radius dhcp disable 2
 wlan profiling radius http disable 2
 ap hotspot venue type 0 0 AP002C.C8DE.06E8
-ap hotspot venue type 0 0 AP380E.4DBF.99DC
 wlan enable 1
 wlan enable 2
 license boot base
