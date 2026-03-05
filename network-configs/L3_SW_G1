@@ -36,7 +36,7 @@
 ! 
 ! 
 !
-! Last configuration change at 17:45:00 UTC Wed Mar 4 2026 by admin
+! Last configuration change at 09:41:19 UTC Thu Mar 5 2026 by admin
 !
 version 17.9
 service timestamps debug datetime msec
@@ -108,6 +108,12 @@ ip dhcp pool EWC_PRIMARY_FIXED
  client-identifier 01f4.bd9e.9a5c.14
  default-router 10.1.60.1 
  option 43 hex f104.0a01.3c32
+!
+ip dhcp pool SERVER
+ network 10.1.10.0 255.255.255.0
+ default-router 10.1.10.1 
+ dns-server 10.1.10.20 8.8.8.8 
+ lease 8
 !
 !
 !
