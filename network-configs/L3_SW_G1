@@ -36,7 +36,6 @@
 ! 
 ! 
 !
-! Last configuration change at 15:07:59 UTC Fri Mar 6 2026 by admin
 !
 version 17.9
 service timestamps debug datetime msec
@@ -625,11 +624,12 @@ ip access-list extended ACL-V20-IT-IN
  10 permit ip any host 10.1.1.2
  20 remark [b ALL] Allow to V10 Server
  20 permit ip 10.1.20.0 0.0.0.255 10.1.10.0 0.0.0.255
- 30 remark [b DENY] Block to other internal VLANs
- 30 deny ip 10.1.20.0 0.0.0.255 10.1.30.0 0.0.0.255
- 40 deny ip 10.1.20.0 0.0.0.255 10.1.40.0 0.0.0.255
- 50 deny ip 10.1.20.0 0.0.0.255 10.1.50.0 0.0.0.255
- 60 deny ip 10.1.20.0 0.0.0.255 10.1.60.0 0.0.0.255
+ 30 remark [b ALL] Allow IT to Manage Devices (V50, V60)
+ 30 permit ip 10.1.20.0 0.0.0.255 10.1.50.0 0.0.0.255
+ 40 permit ip 10.1.20.0 0.0.0.255 10.1.60.0 0.0.0.255
+ 50 remark [b DENY] Block to V30 (Corp) and V40 (Guest)
+ 50 deny ip 10.1.20.0 0.0.0.255 10.1.30.0 0.0.0.255
+ 60 deny ip 10.1.20.0 0.0.0.255 10.1.40.0 0.0.0.255
  70 remark [b] Allow everything else to Internet/DMZ (Let FTD handle it)
  70 permit ip any any
 ip access-list extended ACL-V30-CORP-IN
@@ -651,7 +651,7 @@ ip access-list extended ACL-V30-CORP-IN
  140 permit udp 10.1.30.0 0.0.0.255 10.1.10.0 0.0.0.255 eq 464
  150 permit tcp 10.1.30.0 0.0.0.255 10.1.10.0 0.0.0.255 eq 636
  160 permit icmp 10.1.30.0 0.0.0.255 10.1.10.0 0.0.0.255
- 170 remark [b DENY] Block all other Internal Networks (10.0.0.0/8 includes DMZ/MGMT)
+ 170 remark [b DENY] Block all other Internal Networks (10.0.0.0/8 includes DMZ/MGMT/IT)
  170 deny ip 10.1.30.0 0.0.0.255 10.0.0.0 0.255.255.255
  180 remark [b] Allow Internet (Let FTD filter the rest)
  180 permit ip any any
@@ -676,20 +676,6 @@ ip access-list extended RETURN-TO-FTD
  80 permit ip 10.1.60.0 0.0.0.255 10.1.20.0 0.0.0.255
  90 permit ip 10.1.60.0 0.0.0.255 10.1.30.0 0.0.0.255
  100 permit ip 10.1.60.0 0.0.0.255 10.1.40.0 0.0.0.255
-ip access-list extended VLAN10-IN
- 10 remark === Allow MGMT ===
- 10 permit ip 10.1.10.0 0.0.0.255 10.1.50.0 0.0.0.255
- 20 remark === Allow to Firewall ===
- 20 permit ip any host 10.1.1.2
- 30 remark === Block Internal ===
- 30 deny ip any 10.1.0.0 0.0.255.255
- 40 remark === Allow Internet ===
- 40 permit ip any any
-ip access-list extended VLAN20-IN
- 10 permit ip any host 10.1.1.2
- 15 permit ip 10.1.20.0 0.0.0.255 10.1.10.0 0.0.0.255
- 20 deny ip any 10.1.0.0 0.0.255.255
- 30 permit ip any any
 !
 logging source-interface Vlan50
 logging host 10.1.10.20 transport udp port 1514
