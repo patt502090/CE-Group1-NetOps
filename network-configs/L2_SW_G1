@@ -35,7 +35,7 @@
 ! 
 ! 
 !
-! Last configuration change at 03:37:25 UTC Sat Jan 14 2006 by admin
+! Last configuration change at 04:20:46 UTC Sat Jan 14 2006 by admin
 !
 version 15.2
 no service pad
@@ -401,7 +401,7 @@ interface GigabitEthernet1/0/24
 interface GigabitEthernet1/0/25
  description Link_To_Outdoor_AP_EWC_Building2
  switchport access vlan 10
- switchport trunk allowed vlan 30,40,60
+ switchport trunk allowed vlan 20,30,40,60
  switchport trunk encapsulation dot1q
  switchport trunk native vlan 60
  switchport mode trunk
@@ -410,7 +410,7 @@ interface GigabitEthernet1/0/25
 interface GigabitEthernet1/0/26
  description Link_To_Outdoor_AP_EWC_Building2
  switchport access vlan 10
- switchport trunk allowed vlan 30,40,60
+ switchport trunk allowed vlan 20,30,40,60
  switchport trunk encapsulation dot1q
  switchport trunk native vlan 60
  switchport mode trunk
