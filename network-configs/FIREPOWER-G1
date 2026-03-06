@@ -30,7 +30,7 @@ interface Port-channel1.1
 !
 interface Port-channel1.20
  vlan 20
- nameif privileged
+ nameif it
  security-level 0
  ip address 10.1.20.1 255.255.255.0 
 !
@@ -188,7 +188,7 @@ object network |10.0.1.1
  host 10.0.1.1
 object network |10.1.20.1
  fqdn 10.1.20.1 id 1002
-object network Privileged-Network
+object network IT-Network
  subnet 10.1.20.0 255.255.255.0
 object network MGMT-Network
  subnet 10.1.50.0 255.255.255.0
@@ -240,20 +240,33 @@ object-group service |acSvcg-268435459
 object-group service |acSvcg-268435473
  service-object icmp 
  service-object icmp6 
-object-group service |acSvcg-268435458
+object-group service |acSvcg-268435475
  service-object ip 
+object-group service |acSvcg-268435476
+ service-object icmp 
+ service-object tcp destination eq 88 
+ service-object tcp destination eq 135 
+ service-object tcp destination eq netbios-ssn 
+ service-object tcp destination eq ldap 
+ service-object tcp destination eq 445 
+ service-object tcp destination eq 464 
+ service-object tcp destination eq ldaps 
+ service-object udp destination eq 88 
+ service-object udp destination range netbios-ns netbios-dgm 
+ service-object udp destination eq 389 
+ service-object udp destination eq 464 
 access-group NGFW_ONBOX_ACL global
 access-list NGFW_ONBOX_ACL remark rule-id 268435471: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 268435471: L5 RULE: Allow-DNS-For-Employee
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435471 ifc inside object Privileged-Network any rule-id 268435471 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435471 ifc privileged object Privileged-Network any rule-id 268435471 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435471 ifc inside object IT-Network any rule-id 268435471 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435471 ifc it object IT-Network any rule-id 268435471 
 access-list NGFW_ONBOX_ACL remark rule-id 268435461: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 268435461: L5 RULE: Allow-Prime-SNMP
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435461 ifc outside object SNMP_Server ifc inside object inside-lan rule-id 268435461 event-log both 
 access-list NGFW_ONBOX_ACL remark rule-id 268435460: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 268435460: L5 RULE: Allow_Outside_to_DMZ
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435460 ifc it any ifc dmz object-group |acDestNwg-268435460 rule-id 268435460 event-log both 
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435460 ifc outside any ifc dmz object-group |acDestNwg-268435460 rule-id 268435460 event-log both 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435460 ifc privileged any ifc dmz object-group |acDestNwg-268435460 rule-id 268435460 event-log both 
 access-list NGFW_ONBOX_ACL remark rule-id 268435474: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 268435474: L7 RULE: block HR group
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435474 any ifc outside any rule-id 268435474 
@@ -261,8 +274,9 @@ access-list NGFW_ONBOX_ACL remark rule-id 268435468: ACCESS POLICY: NGFW_Access_
 access-list NGFW_ONBOX_ACL remark rule-id 268435468: L5 RULE: Allow-DMZ-to-Server-App
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435468 ifc dmz any ifc inside object Server-LAN rule-id 268435468 
 access-list NGFW_ONBOX_ACL remark rule-id 268435467: ACCESS POLICY: NGFW_Access_Policy
-access-list NGFW_ONBOX_ACL remark rule-id 268435467: L5 RULE: Allow_Inside_to_DMZ
+access-list NGFW_ONBOX_ACL remark rule-id 268435467: L5 RULE: Allow_InsideAndIT_to_DMZ
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435467 ifc inside any ifc dmz any rule-id 268435467 event-log flow-end 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435467 ifc it any ifc dmz any rule-id 268435467 event-log flow-end 
 access-list NGFW_ONBOX_ACL remark rule-id 268435469: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 268435469: L5 RULE: Allow-All-for-MGMT
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435469 ifc inside object MGMT-Network any rule-id 268435469 
@@ -272,36 +286,26 @@ access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc co
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc dmz any ifc outside any rule-id 268435459 event-log both 
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc guest any ifc outside any rule-id 268435459 event-log both 
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc inside any ifc outside any rule-id 268435459 event-log both 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc privileged any ifc outside any rule-id 268435459 event-log both 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435459 ifc it any ifc outside any rule-id 268435459 event-log both 
 access-list NGFW_ONBOX_ACL remark rule-id 268435473: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 268435473: L5 RULE: Allow-Internal-Ping
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc dmz any ifc dmz any rule-id 268435473 
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc dmz any ifc inside any rule-id 268435473 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc dmz any ifc privileged any rule-id 268435473 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc dmz any ifc it any rule-id 268435473 
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc inside any ifc dmz any rule-id 268435473 
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc inside any ifc inside any rule-id 268435473 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc inside any ifc privileged any rule-id 268435473 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc privileged any ifc dmz any rule-id 268435473 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc privileged any ifc inside any rule-id 268435473 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc privileged any ifc privileged any rule-id 268435473 
-access-list NGFW_ONBOX_ACL remark rule-id 268435458: ACCESS POLICY: NGFW_Access_Policy
-access-list NGFW_ONBOX_ACL remark rule-id 268435458: L5 RULE: xxx
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc corporate any ifc corporate any rule-id 268435458 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc corporate any ifc guest any rule-id 268435458 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc corporate any ifc inside any rule-id 268435458 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc corporate any ifc privileged any rule-id 268435458 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc guest any ifc corporate any rule-id 268435458 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc guest any ifc guest any rule-id 268435458 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc guest any ifc inside any rule-id 268435458 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc guest any ifc privileged any rule-id 268435458 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc inside any ifc corporate any rule-id 268435458 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc inside any ifc guest any rule-id 268435458 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc inside any ifc inside any rule-id 268435458 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc inside any ifc privileged any rule-id 268435458 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc privileged any ifc corporate any rule-id 268435458 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc privileged any ifc guest any rule-id 268435458 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc privileged any ifc inside any rule-id 268435458 
-access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435458 ifc privileged any ifc privileged any rule-id 268435458 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc inside any ifc it any rule-id 268435473 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc it any ifc dmz any rule-id 268435473 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc it any ifc inside any rule-id 268435473 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435473 ifc it any ifc it any rule-id 268435473 
+access-list NGFW_ONBOX_ACL remark rule-id 268435475: ACCESS POLICY: NGFW_Access_Policy
+access-list NGFW_ONBOX_ACL remark rule-id 268435475: L5 RULE: Allow_IT_To_Inside
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435475 ifc it any ifc inside any rule-id 268435475 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435475 ifc it any ifc it any rule-id 268435475 
+access-list NGFW_ONBOX_ACL remark rule-id 268435476: ACCESS POLICY: NGFW_Access_Policy
+access-list NGFW_ONBOX_ACL remark rule-id 268435476: L5 RULE: Allow_Corp_To_AD
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435476 ifc corporate any ifc corporate object Server-LAN rule-id 268435476 
+access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435476 ifc corporate any ifc inside object Server-LAN rule-id 268435476 
 access-list NGFW_ONBOX_ACL remark rule-id 1: ACCESS POLICY: NGFW_Access_Policy
 access-list NGFW_ONBOX_ACL remark rule-id 1: L5 RULE: DefaultActionRule
 access-list NGFW_ONBOX_ACL advanced deny ip any any rule-id 1 event-log both 
@@ -313,7 +317,7 @@ logging host inside 10.1.10.30
 logging permit-hostdown
 mtu inside-lag 1500
 mtu inside 1500
-mtu privileged 1500
+mtu it 1500
 mtu corporate 1500
 mtu guest 1500
 mtu dmz 1500
@@ -322,7 +326,7 @@ mtu management 1500
 no failover
 failover replication http
 monitor-interface inside
-monitor-interface privileged
+monitor-interface it
 monitor-interface corporate
 monitor-interface guest
 monitor-interface dmz
@@ -339,8 +343,8 @@ object network inside-lan
  nat (inside,outside) dynamic interface
 object network DMZ-LAN
  nat (dmz,outside) dynamic interface
-object network Privileged-Network
- nat (privileged,outside) dynamic interface
+object network IT-Network
+ nat (it,outside) dynamic interface
 object network Guest-Network
  nat (guest,outside) dynamic interface
 object network Corporate-Network
@@ -375,8 +379,8 @@ ip-client inside
 ip-client inside ipv6
 ip-client guest
 ip-client guest ipv6
-ip-client privileged
-ip-client privileged ipv6
+ip-client it
+ip-client it ipv6
 snmp-server group AUTH v3 auth 
 snmp-server group PRIV v3 priv 
 snmp-server group NOAUTH v3 noauth 
@@ -451,5 +455,5 @@ call-home
   subscribe-to-alert-group telemetry periodic daily
 snort preserve-connection
 snort multichannel-lb enable
-Cryptochecksum:07eb4db1b2b1a5254c784d150e39b998
+Cryptochecksum:42b263e6b6e78d552088cd0137dfed49
 : end
