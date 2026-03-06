@@ -105,6 +105,7 @@ advanced eap bcast-key-interval 3600
 advanced 802.11-abgn pak-rssi-location threshold -100
 advanced 802.11-abgn pak-rssi-location trigger-threshold 10
 advanced 802.11-abgn pak-rssi-location reset-threshold 8
+advanced 802.11-abgn pak-rssi-location ntp 16.131.73.96
 advanced 802.11-abgn pak-rssi-location timeout 3
 advanced hotspot cmbk-delay 1
 Cisco Public Safety is not allowed to set in this domain
@@ -157,6 +158,9 @@ interface vlan privileged 20
 interface nasid none corporate
 interface nasid none guest
 interface nasid none privileged
+nasid apgroup  Group-HighDensity
+nasid apgroup  Group-Office_Standard
+nasid apgroup  Group-Outdoor
 nasid apgroup  default-group
 wlan nasid none 1
 wlan nasid none 2
@@ -201,7 +205,13 @@ ipv6 multicast mode multicast ::
 lag enable
 load-balancing aggressive enable
 load-balancing window 5
+wlan apgroup add Group-HighDensity "Conference & Convention Halls"
+wlan apgroup add Group-Office_Standard "Office & Food Court"
+wlan apgroup add Group-Outdoor "Center Zone"
 wlan apgroup add default-group
+wlan apgroup qinq tagging eap-sim-aka Group-HighDensity enable
+wlan apgroup qinq tagging eap-sim-aka Group-Office_Standard enable
+wlan apgroup qinq tagging eap-sim-aka Group-Outdoor enable
 wlan apgroup qinq tagging eap-sim-aka default-group enable
 nmsp cipher-option high enable
 wlan apgroup interface-mapping add default-group 1 corporate
@@ -487,8 +497,11 @@ wlan profiling radius dhcp disable 1
 wlan profiling radius http disable 1
 wlan profiling radius dhcp disable 2
 wlan profiling radius http disable 2
-ap hotspot venue type 0 0 AP002C.C8DE.06E8
-ap hotspot venue type 0 0 AP380E.4DBF.99DC
+ap hotspot venue type 0 0 Conference_ap
+ap hotspot venue type 0 0 Outdoor_Ap
+wlan apgroup hotspot venue type Group-HighDensity 0 0
+wlan apgroup hotspot venue type Group-Office_Standard 0 0
+wlan apgroup hotspot venue type Group-Outdoor 0 0
 wlan enable 1
 wlan enable 2
 license boot base
