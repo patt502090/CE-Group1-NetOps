@@ -214,8 +214,20 @@ wlan apgroup qinq tagging eap-sim-aka Group-Office_Standard enable
 wlan apgroup qinq tagging eap-sim-aka Group-Outdoor enable
 wlan apgroup qinq tagging eap-sim-aka default-group enable
 nmsp cipher-option high enable
+wlan apgroup interface-mapping add Group-HighDensity 1 corporate
+wlan apgroup interface-mapping add Group-HighDensity 2 guest
+wlan apgroup interface-mapping add Group-Office_Standard 1 corporate
+wlan apgroup interface-mapping add Group-Office_Standard 2 guest
+wlan apgroup interface-mapping add Group-Outdoor 1 corporate
+wlan apgroup interface-mapping add Group-Outdoor 2 guest
 wlan apgroup interface-mapping add default-group 1 corporate
 wlan apgroup interface-mapping add default-group 2 guest
+wlan apgroup nac-snmp disable Group-HighDensity 1
+wlan apgroup nac-snmp disable Group-HighDensity 2
+wlan apgroup nac-snmp disable Group-Office_Standard 1
+wlan apgroup nac-snmp disable Group-Office_Standard 2
+wlan apgroup nac-snmp disable Group-Outdoor 1
+wlan apgroup nac-snmp disable Group-Outdoor 2
 wlan apgroup nac-snmp disable default-group 1
 wlan apgroup nac-snmp disable default-group 2
 logging syslog host 10.1.10.30
@@ -497,8 +509,8 @@ wlan profiling radius dhcp disable 1
 wlan profiling radius http disable 1
 wlan profiling radius dhcp disable 2
 wlan profiling radius http disable 2
-ap hotspot venue type 0 0 Conference_ap
-ap hotspot venue type 0 0 Outdoor_Ap
+ap hotspot venue type 0 0 HQ-F1-G1-Conference-AP01
+ap hotspot venue type 0 0 HQ-F1-G1-Outdoor-AP01
 wlan apgroup hotspot venue type Group-HighDensity 0 0
 wlan apgroup hotspot venue type Group-Office_Standard 0 0
 wlan apgroup hotspot venue type Group-Outdoor 0 0
