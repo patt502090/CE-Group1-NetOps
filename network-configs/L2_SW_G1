@@ -35,7 +35,7 @@
 ! 
 ! 
 !
-! Last configuration change at 05:08:50 UTC Sat Jan 14 2006 by admin
+! Last configuration change at 21:46:06 UTC Sat Jan 14 2006 by admin
 !
 version 15.2
 no service pad
@@ -407,6 +407,7 @@ interface GigabitEthernet1/0/25
  switchport trunk native vlan 60
  switchport mode trunk
  spanning-tree portfast edge trunk
+ ip dhcp snooping trust
 !
 interface GigabitEthernet1/0/26
  description Link_To_Outdoor_AP_EWC_Building2
@@ -416,6 +417,7 @@ interface GigabitEthernet1/0/26
  switchport trunk native vlan 60
  switchport mode trunk
  spanning-tree portfast edge trunk
+ ip dhcp snooping trust
 !
 interface GigabitEthernet1/0/27
  description Link_To_Outdoor_AP_EWC_Building2
