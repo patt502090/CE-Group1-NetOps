@@ -36,7 +36,7 @@
 ! 
 ! 
 !
-! Last configuration change at 08:21:02 UTC Sat Mar 7 2026 by admin
+! Last configuration change at 13:33:50 UTC Sat Mar 7 2026 by admin
 !
 version 17.9
 service timestamps debug datetime msec
@@ -667,6 +667,8 @@ ip access-list extended ACL-V30-CORP-IN
 ip access-list extended ACL-V40-GUEST-IN
  10 remark Allow to FTD Gateway
  10 permit ip any host 10.1.1.2
+ 15 permit udp any any eq bootps
+ 16 permit udp any any eq bootpc
  20 remark [b DENY] Block all Internal Networks
  20 deny ip 10.1.40.0 0.0.0.255 10.0.0.0 0.255.255.255
  30 remark [b] Allow ONLY Internet (Web & DNS)
