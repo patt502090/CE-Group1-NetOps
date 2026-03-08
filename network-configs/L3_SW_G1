@@ -36,7 +36,7 @@
 ! 
 ! 
 !
-! Last configuration change at 13:33:50 UTC Sat Mar 7 2026 by admin
+! Last configuration change at 10:49:58 UTC Sun Mar 8 2026 by admin
 !
 version 17.9
 service timestamps debug datetime msec
@@ -695,7 +695,6 @@ logging host 10.1.10.1
 logging host 10.1.10.10
 logging host 172.31.0.102
 logging host 10.1.10.30
-logging host 10.1.10.30 transport udp port 5140
 !
 route-map ASYM-FIX permit 10 
  match ip address RETURN-TO-FTD
