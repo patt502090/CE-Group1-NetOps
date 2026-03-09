@@ -109,6 +109,8 @@ advanced 802.11-abgn pak-rssi-location ntp 16.131.73.96
 advanced 802.11-abgn pak-rssi-location timeout 3
 advanced hotspot cmbk-delay 1
 Cisco Public Safety is not allowed to set in this domain
+ap cert-expiry-ignore mic enable
+ap cert-expiry-ignore ssc enable
 ap syslog host global ::
 ap dtls-cipher-suite RSA-AES128-SHA
 ap dtls-wlc-mic sha2
