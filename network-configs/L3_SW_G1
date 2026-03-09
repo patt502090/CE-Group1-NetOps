@@ -101,13 +101,13 @@ ip dhcp pool EMPLOYEE
 ip dhcp pool VLAN60_MGMT
  network 10.1.60.0 255.255.255.0
  default-router 10.1.60.1 
- option 43 hex f104.0a01.3c32
+ option 43 hex f104.0a01.3c0a
 !
 ip dhcp pool EWC_PRIMARY_FIXED
  host 10.1.60.50 255.255.255.0
  client-identifier 01f4.bd9e.9a5c.14
  default-router 10.1.60.1 
- option 43 hex f104.0a01.3c32
+ option 43 hex f104.0a01.3c0a
 !
 ip dhcp pool SERVER
  network 10.1.10.0 255.255.255.0
