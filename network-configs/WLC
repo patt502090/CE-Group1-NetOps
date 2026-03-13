@@ -452,7 +452,7 @@ trapflags mesh sec backhaul change disable
 trapflags mesh psk auth failure disable
 wlan create 1 "Group01-Corporate Enterprise" "Group01-Corporate Enterprise"
 wlan create 2 "Group01-Corporate Guest " "Group01-Corporate Guest "
-wlan create 3 "StarBug WIFI FREE" "StarBug WIFI FREE"
+wlan create 3 Admin Admin
 wlan nac snmp disable 1
 wlan nac snmp disable 2
 wlan nac snmp disable 3
@@ -465,6 +465,7 @@ wlan multicast interface 1 disable
 wlan multicast interface 2 disable
 wlan multicast interface 3 disable
 wlan aaa-override enable 1
+wlan broadcast-ssid disable 3
 wlan band-select allow disable 1
 wlan band-select allow disable 2
 wlan band-select allow disable 3
@@ -503,6 +504,7 @@ wlan multicast buffer disable 0 1
 wlan multicast buffer disable 0 2
 wlan multicast buffer disable 0 3
 wlan qos 2 platinum
+wlan qos 3 platinum
 wlan session-timeout 1 1800
 wlan session-timeout 2 1800
 wlan session-timeout 3 1800
@@ -518,6 +520,7 @@ wlan wgb broadcast-tagging disable 3
 wlan wgb prp disable 1
 wlan wgb prp disable 2
 wlan wgb prp disable 3
+wlan security wpa disable 3
 wlan radius_server auth add 1 1
 wlan radius_server acct add 1 1
 wlan radius_server auth add 3 1
@@ -528,7 +531,6 @@ wlan security splash-page-web-redir disable 3
 wlan security web-auth enable 3
 wlan security wpa akm 802.1x enable 1
 wlan security wpa akm psk enable 2
-wlan security wpa akm 802.1x enable 3
 wlan security wpa akm cckm timestamp-tolerance  1000 1
 wlan security wpa akm cckm timestamp-tolerance  1000 2
 wlan security wpa akm cckm timestamp-tolerance  1000 3
