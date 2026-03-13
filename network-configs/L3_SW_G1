@@ -36,7 +36,7 @@
 ! 
 ! 
 !
-! Last configuration change at 09:21:42 UTC Thu Mar 12 2026 by admin
+! Last configuration change at 15:24:55 UTC Fri Mar 13 2026 by admin
 !
 version 17.9
 service timestamps debug datetime msec
@@ -81,7 +81,7 @@ ip dhcp pool STAFF
 ip dhcp pool GUEST
  network 10.1.40.0 255.255.255.0
  default-router 10.1.40.1 
- dns-server 172.30.0.4 
+ dns-server 172.30.0.4 192.100.77.10 
 !
 ip dhcp pool MANAGEMENT
  network 10.1.50.0 255.255.255.0
