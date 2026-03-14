@@ -307,8 +307,8 @@ access-list NGFW_ONBOX_ACL remark rule-id 268435476: L5 RULE: Allow_Corp_To_AD
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435476 ifc corporate any ifc corporate object Server-LAN rule-id 268435476 
 access-list NGFW_ONBOX_ACL advanced permit object-group |acSvcg-268435476 ifc corporate any ifc inside object Server-LAN rule-id 268435476 
 access-list NGFW_ONBOX_ACL remark rule-id 1: ACCESS POLICY: NGFW_Access_Policy
-access-list NGFW_ONBOX_ACL remark rule-id 1: L5 RULE: DefaultActionRule
-access-list NGFW_ONBOX_ACL advanced deny ip any any rule-id 1 event-log both 
+access-list NGFW_ONBOX_ACL remark rule-id 1: L7 RULE: DefaultActionRule
+access-list NGFW_ONBOX_ACL advanced permit ip any any rule-id 1 event-log both 
 pager lines 24
 logging enable
 logging timestamp
@@ -455,5 +455,5 @@ call-home
   subscribe-to-alert-group telemetry periodic daily
 snort preserve-connection
 snort multichannel-lb enable
-Cryptochecksum:42b263e6b6e78d552088cd0137dfed49
+Cryptochecksum:e47a164cac7692ec31d757d4dfd1f74e
 : end
