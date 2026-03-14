@@ -36,7 +36,7 @@
 ! 
 ! 
 !
-! Last configuration change at 15:24:55 UTC Fri Mar 13 2026 by admin
+! Last configuration change at 08:16:24 UTC Sat Mar 14 2026 by admin
 !
 version 17.9
 service timestamps debug datetime msec
@@ -603,6 +603,14 @@ interface Vlan60
  ip flow monitor NETFLOW-MONITOR output
  ip address 10.1.60.1 255.255.255.0
  ip policy route-map ASYM-FIX
+!
+interface Vlan76
+ description test
+ no ip address
+!
+interface Vlan77
+ description test
+ no ip address
 !
 interface Vlan100
  ip flow monitor NETFLOW-MONITOR input
