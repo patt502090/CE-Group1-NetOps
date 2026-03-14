@@ -452,7 +452,7 @@ trapflags mesh sec backhaul change disable
 trapflags mesh psk auth failure disable
 wlan create 1 "Group01-Corporate Enterprise" "Group01-Corporate Enterprise"
 wlan create 2 "Group01-Corporate Guest " "Group01-Corporate Guest "
-wlan create 3 Admin Admin
+wlan create 3 Admin-G1 Admin-G1
 wlan nac snmp disable 1
 wlan nac snmp disable 2
 wlan nac snmp disable 3
