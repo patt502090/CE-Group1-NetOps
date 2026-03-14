@@ -35,7 +35,7 @@
 ! 
 ! 
 !
-! Last configuration change at 19:50:59 UTC Wed Jan 18 2006 by admin
+! Last configuration change at 20:07:24 UTC Sat Jan 21 2006 by admin
 !
 version 15.2
 no service pad
@@ -55,12 +55,15 @@ username admin privilege 15 secret 5 $1$9Iav$rYo5i2Bc6tX1icX3f1i8U0
 aaa new-model
 !
 !
+aaa group server radius RADIUS-GRP
+ server name MY_RADIUS_SERVER
+!
 aaa authentication login default local
 aaa authentication login LOCAL_AUTH local
-aaa authentication dot1x default group radius
+aaa authentication dot1x default group RADIUS-GRP
 aaa authorization exec default local 
-aaa authorization network default group radius 
-aaa accounting dot1x default start-stop group radius
+aaa authorization network default group RADIUS-GRP 
+aaa accounting dot1x default start-stop group RADIUS-GRP
 !
 !
 !
@@ -77,6 +80,7 @@ system mtu routing 1500
 !
 !
 ip dhcp snooping vlan 10,20,30,40,50,60,100
+no ip dhcp snooping information option
 ip dhcp snooping
 ip domain-name lab.local
 ip name-server 8.8.8.8
