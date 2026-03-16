@@ -559,6 +559,7 @@ wlan profiling radius http disable 2
 wlan profiling radius dhcp disable 3
 wlan profiling radius http disable 3
 ap hotspot venue type 0 0 HQ-F1-G1-Conference-AP01
+ap hotspot venue type 0 0 HQ-F1-G1-Outdoor-AP01
 wlan apgroup hotspot venue type Group-HighDensity 0 0
 wlan apgroup hotspot venue type Group-Office_Standard 0 0
 wlan apgroup hotspot venue type Group-Outdoor 0 0
