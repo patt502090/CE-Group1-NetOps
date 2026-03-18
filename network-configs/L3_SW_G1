@@ -36,7 +36,7 @@
 ! 
 ! 
 !
-! Last configuration change at 10:49:58 UTC Sun Mar 8 2026 by admin
+! Last configuration change at 17:24:56 UTC Sat Mar 14 2026 by admin
 !
 version 17.9
 service timestamps debug datetime msec
@@ -71,6 +71,7 @@ ip dhcp excluded-address 10.1.50.1 10.1.50.50
 ip dhcp excluded-address 10.1.10.20
 ip dhcp excluded-address 10.1.20.1 10.1.20.10
 ip dhcp excluded-address 10.1.60.1 10.1.60.10
+ip dhcp excluded-address 10.1.60.51
 !
 ip dhcp pool STAFF
  network 10.1.30.0 255.255.255.0
@@ -80,7 +81,7 @@ ip dhcp pool STAFF
 ip dhcp pool GUEST
  network 10.1.40.0 255.255.255.0
  default-router 10.1.40.1 
- dns-server 172.30.0.4 
+ dns-server 172.30.0.4 192.100.77.10 
 !
 ip dhcp pool MANAGEMENT
  network 10.1.50.0 255.255.255.0
@@ -101,13 +102,7 @@ ip dhcp pool EMPLOYEE
 ip dhcp pool VLAN60_MGMT
  network 10.1.60.0 255.255.255.0
  default-router 10.1.60.1 
- option 43 hex f104.0a01.3c32
-!
-ip dhcp pool EWC_PRIMARY_FIXED
- host 10.1.60.50 255.255.255.0
- client-identifier 01f4.bd9e.9a5c.14
- default-router 10.1.60.1 
- option 43 hex f104.0a01.3c32
+ option 43 hex f104.0a01.3c33
 !
 ip dhcp pool SERVER
  network 10.1.10.0 255.255.255.0
@@ -115,11 +110,17 @@ ip dhcp pool SERVER
  dns-server 10.1.10.20 8.8.8.8 
  lease 8
 !
-ip dhcp pool EWC_SECONDARY_FIXED
+ip dhcp pool EWC_STANDBY_FIXED
+ host 10.1.60.51 255.255.255.0
+ client-identifier 01f4.bd9e.9a5c.14
+ default-router 10.1.60.1 
+ option 43 hex f104.0a01.3c0a
+!
+ip dhcp pool EWC_STANDBY_AP
  host 10.1.60.57 255.255.255.0
  client-identifier 01f0.1d2d.b6ce.b0
  default-router 10.1.60.1 
- option 43 hex f104.0a01.3c32
+ option 43 hex f104.0a01.3c0a
 !
 !
 !
@@ -602,6 +603,14 @@ interface Vlan60
  ip flow monitor NETFLOW-MONITOR output
  ip address 10.1.60.1 255.255.255.0
  ip policy route-map ASYM-FIX
+!
+interface Vlan76
+ description test
+ no ip address
+!
+interface Vlan77
+ description test
+ no ip address
 !
 interface Vlan100
  ip flow monitor NETFLOW-MONITOR input
