@@ -529,7 +529,7 @@ wlan security splash-page-web-redir disable 1
 wlan security splash-page-web-redir disable 2
 wlan security splash-page-web-redir disable 3
 wlan security web-auth enable 3
-wlan security web-auth server-precedence 3  local ldap
+wlan security web-auth server-precedence 3  local
 wlan security wpa akm 802.1x enable 1
 wlan security wpa akm psk enable 2
 wlan security wpa akm cckm timestamp-tolerance  1000 1
