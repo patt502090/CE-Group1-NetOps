@@ -1,0 +1,374 @@
+Current configuration : 11826 bytes
+!
+! Last configuration change at 06:06:47 UTC Wed Mar 18 2026 by admin
+!
+version 17.15
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service internal
+no platform punt-keepalive disable-kernel-core
+no platform punt-keepalive settings
+platform console serial
+!
+hostname EWC_G1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+logging console emergencies
+aaa new-model
+!
+!
+aaa authentication dot1x Radius-Auth group radius
+aaa accounting identity Radius-Acct start-stop group radius
+!
+!
+aaa server radius dynamic-author
+ client 10.1.10.10
+!
+aaa session-id common
+no fips authorization-key
+!
+!
+!
+!
+login on-success log
+!
+!
+!
+!
+!
+!
+flow exporter default-flow-exporter
+ destination local wlc
+!
+!
+flow monitor default-flow-monitor
+ exporter default-flow-exporter
+ record wireless avc basic
+!
+!
+access-session mac-move deny
+!
+crypto pki trustpoint TP-self-signed-2076737672
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-2076737672
+ revocation-check none
+ rsakeypair TP-self-signed-2076737672
+ hash sha512
+!
+!
+crypto pki certificate chain TP-self-signed-2076737672
+ certificate self-signed 01
+  30820330 30820218 A0030201 02020101 300D0609 2A864886 F70D0101 0D050030 
+  31312F30 2D060355 04030C26 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 32303736 37333736 3732301E 170D3235 31323138 30373332 
+  31365A17 0D333531 32313830 37333231 365A3031 312F302D 06035504 030C2649 
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D32 30373637 
+  33373637 32308201 22300D06 092A8648 86F70D01 01010500 0382010F 00308201 
+  0A028201 0100911F 114AC83C 28BE0D94 2BD381F8 1FFC6F1B 98A66329 86542F9E 
+  CACD97EB 9B7948FB 99F6EB80 46D2F64E 4CBB86CE 012B2E04 B9038F87 D5F852FE 
+  D916AB86 538FAC55 E190723E E9953CFD 4DC96076 89FE1801 FCA10B8C 75B7840F 
+  EE24F22B 913D0791 CE4A4F89 380C4C88 617679A5 48679B51 751F8F0F F1D3FABF 
+  AE64B08B 8DD35DDC 556CFAAF C747FE1F 90771052 69839DCE 61E1515E 2E61A14C 
+  75867BB3 FEB9CB8F E88EC760 CD99ED6D 733B2200 D77228F1 45C6AD87 7B291C80 
+  3870FED9 E9B0DA57 134DFD7B 60A785B8 128B68A2 2AB0DEBF 62FC7E14 39CD0A12 
+  26436D5D 93C0BEBE 6B0DB618 B4E1908C CD58D852 A1DD44B3 47A6FAE7 470BFAC3 
+  F6F1DA63 5C190203 010001A3 53305130 1D060355 1D0E0416 0414CF30 09D7538E 
+  AD7AEFE6 7AF8245A 30B2DAC8 847D301F 0603551D 23041830 168014CF 3009D753 
+  8EAD7AEF E67AF824 5A30B2DA C8847D30 0F060355 1D130101 FF040530 030101FF 
+  300D0609 2A864886 F70D0101 0D050003 82010100 66655052 7659EC5E 539D62C0 
+  466AFAE0 F6D2F9EE 90846FCC AF92E2F0 3C9A8978 126F3F4E A5CDBBB8 6EA24976 
+  7E12EEBB EBFD49C7 B102596E E3027F60 F8E1D3CE 68AF5E0F AB483481 28EF955F 
+  5A2FEE2D FEFFE01F 2988507B E50BA3C9 79678B9E 7D41CBD8 87F238CA A16F40F7 
+  E859D6EA A343CF07 5503ADB3 079BF1B7 910DD301 DA508A20 F36E46CD 32E19317 
+  2A9DCDF7 67F30684 99D9135E 0790839B 975F6B36 CB6D3F87 A8C34A27 DFEB1B18 
+  63669C1A 32AD8E11 894257DC 9C6D339F 9980DD72 4E211FBE A0008728 74B3CA44 
+  3A06D13D A92D3C31 462E4278 C38F0222 935CE444 714AA5E8 119C8816 21295608 
+  542BC437 669F8112 B59E2FA9 8EDF680C 924E4667
+  	quit
+!
+!
+service-template DEFAULT_LINKSEC_POLICY_MUST_SECURE
+ linksec policy must-secure
+service-template DEFAULT_LINKSEC_POLICY_SHOULD_SECURE
+ linksec policy should-secure
+service-template DEFAULT_CRITICAL_VOICE_TEMPLATE
+ voice vlan
+service-template DEFAULT_CRITICAL_DATA_TEMPLATE
+service-template webauth-global-inactive
+ inactivity-timer 3600 
+archive
+ log config
+  logging enable
+memory free low-watermark processor 359
+device classifier
+license udi pid C9800-AP sn FGL2429L31J
+!         
+enable secret 9 $9$.ee/JznHgkNIek$KwwDkggXNEs..YBFWRn7j5jBqkU0buF27jlKnCAtEN6
+!
+username webui privilege 15 password 0 cisco
+username admin privilege 15 secret 9 $9$1zM2J94WCfz4qE$KiuIh7XCCAuxG54J.jK.o.tGRbB07e5NP3Klqyxk5JA
+username 380e4dbf99dc password 0 380e4dbf99dc
+username 380e.4dbf.99dc password 0 380e4dbf99dc
+username 70695a714080 password 0 70695a714080
+username 7069.5a71.4080 password 0 70695a714080
+!
+redundancy
+ mode sso
+!
+crypto engine compliance shield disable
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0
+ description WLC2_EWC
+ mac-address 0000.5e00.0101
+ ip dhcp client client-id GigabitEthernet0
+ ip dhcp client broadcast-flag clear
+ ip address 10.1.60.10 255.255.255.0
+ no negotiation auto
+!
+interface Vlan30
+ description staff
+ no ip address
+!
+interface Vlan40
+ description guest
+ no ip address
+!
+ip default-gateway 10.1.50.1
+ip forward-protocol nd
+ip forward-protocol udp
+ip tftp source-interface GigabitEthernet0
+ip tftp blocksize 8192
+ip http server
+ip http authentication local
+ip http secure-server
+ip http secure-trustpoint CISCO_IDEVID_SUDI
+ip ssh bulk-mode 131072
+ip scp server enable
+ip route 0.0.0.0 0.0.0.0 GigabitEthernet0 250
+ip route 10.1.60.100 255.255.255.255 GigabitEthernet0
+!
+logging host 10.1.10.30
+snmp-server group G1_ADMIN_GRP v3 priv 
+snmp-server group G1_ADMIN_GRP v3 priv context G1_EWC_DEVICE_CTX 
+snmp-server enable traps snmp authentication linkdown linkup coldstart warmstart
+snmp-server enable traps flowmon
+snmp-server enable traps tty
+snmp-server enable traps pki
+snmp-server enable traps entity-sensor
+snmp-server enable traps entity
+snmp-server enable traps smart-license
+snmp-server enable traps vrfmib vrf-up vrf-down vnet-trunk-up vnet-trunk-down
+snmp-server host 172.31.0.102 version 3 priv AdminG1 
+snmp-server context G1_EWC_DEVICE_CTX
+!
+!
+radius server Radius
+ address ipv4 10.1.10.10 auth-port 1812 acct-port 1813
+ key Testing123
+!
+!
+control-plane
+!
+banner exec ^C
+########################################################################################################
+#                                                                                                      #
+#      Welcome to the Cisco Catalyst C9800-AP Embedded Wireless Controller command line interface      #
+#                                                                                                      #
+#                      !!! Please complete the DAY0 Device Provisioning !!!                            #
+#                   !!! NOTE: COMPLETE ALL THE STEPS IN PROVISIONING GUIDE !!!                         #
+#                                                                                                      #
+#                     To access the provisioning guide type the below command:                         #
+#                         more bootflash:ewc_day0_device_provisioning_guide                            #
+#                                                                                                      #
+########################################################################################################
+^C
+!
+line con 0
+ exec-timeout 0 0
+ stopbits 1
+line vty 0
+ exec-timeout 5 0
+ transport input ssh
+line vty 1 4
+ length 0
+ transport input ssh
+line vty 5 15
+ transport input ssh
+!
+ntp server 0.ciscome.pool.ntp.org
+ntp server 1.ciscome.pool.ntp.org
+ntp server 2.ciscome.pool.ntp.org
+!
+!
+!
+!
+!
+wireless aaa policy default-aaa-policy
+wireless cts-sxp profile default-sxp-profile
+wireless management trustpoint CISCO_IDEVID_CMCA2_SUDI
+wireless management interface GigabitEthernet0
+wireless profile airtime-fairness default-atf-policy 0
+wireless profile dot11be default-dot11be-profile
+ description "Default 802.11be profile"
+wireless profile flex default-flex-profile
+ description "default flex profile"
+ native-vlan-id 60
+ vlan-name GUEST
+  vlan-id 40
+ vlan-name CORPORATE
+  vlan-id 30
+ vlan-name PRIVILEGED
+  vlan-id 20
+wireless profile image-download default
+ description "default image download profile"
+ image-download-mode http
+wireless profile mesh default-mesh-profile
+ description "default mesh profile"
+wireless profile radio default-radio-profile
+ description "Preconfigured default radio profile"
+wireless profile policy prof-dot1x
+ aaa-override
+ no central association
+ no central dhcp
+ no central switching
+ vlan 30
+ no shutdown
+wireless profile policy prof-webauth
+ no central association
+ no central dhcp
+ no central switching
+ vlan 40
+ no shutdown
+wireless profile policy Policy_VLAN30
+ no central association
+ no central dhcp
+ no central switching
+ vlan 30
+ no shutdown
+wireless profile policy Policy_VLAN40
+ no central association
+ no central dhcp
+ no central switching
+ vlan 40
+ no shutdown
+wireless profile policy default-policy-profile
+ no central association
+ no central dhcp
+ no central switching
+ description "default policy profile"
+ dhcp-tlv-caching
+ http-tlv-caching
+ ipv4 flow monitor default-flow-monitor input
+ ipv4 flow monitor default-flow-monitor output
+ no shutdown
+wireless tag site default-site-tag
+ description "default site tag"
+ no local-site
+wireless tag policy default-policy-tag
+ description "default policy-tag"
+ wlan Group01-WiFi policy prof-webauth
+ wlan Group01-8021x policy prof-dot1x
+ wlan CiscoAirProvision policy default-policy-profile
+wireless tag rf default-rf-tag
+ description "default RF tag"
+wireless country HK
+wireless country TH
+wlan Group01-WiFi 2 "Group01-Guest Building 2 "
+ no security ft adaptive
+ security wpa psk set-key ascii 0 group1guest
+ no security wpa akm dot1x
+ security wpa akm psk
+ no shutdown
+wlan Group01-8021x 1 "Group01-Corporate Building 2 "
+ security dot1x authentication-list Radius-Auth
+ no shutdown
+ap dot11 24ghz rf-profile Low_Client_Density_rf_24gh
+ coverage data rssi threshold -90
+ coverage level 2
+ coverage voice rssi threshold -90
+ description "pre configured Low Client Density rfprofile for 2.4gh radio"
+ high-density rx-sop threshold low
+ rate RATE_12M supported
+ rate RATE_24M supported
+ rate RATE_6M supported
+ tx-power v1 threshold -65
+ no shutdown
+ap dot11 24ghz rf-profile High_Client_Density_rf_24gh
+ description "pre configured High Client Density rfprofile for 2.4gh radio"
+ high-density rx-sop threshold medium
+ rate RATE_11M disable
+ rate RATE_12M mandatory
+ rate RATE_1M disable
+ rate RATE_24M supported
+ rate RATE_2M disable
+ rate RATE_5_5M disable
+ rate RATE_6M disable
+ tx-power min 7
+ no shutdown
+ap dot11 24ghz rf-profile Typical_Client_Density_rf_24gh
+ description "pre configured Typical Client Density rfprofile for 2.4gh radio"
+ rate RATE_11M disable
+ rate RATE_12M mandatory
+ rate RATE_1M disable
+ rate RATE_24M supported
+ rate RATE_2M disable
+ rate RATE_5_5M disable
+ rate RATE_6M disable
+ no shutdown
+ap dot11 24ghz rate RATE_12M supported
+ap dot11 24ghz rate RATE_24M supported
+ap dot11 24ghz rate RATE_6M supported
+ap dot11 5ghz rf-profile Low_Client_Density_rf_5gh
+ coverage data rssi threshold -90
+ coverage level 2
+ coverage voice rssi threshold -90
+ description "pre configured Low Client Density rfprofile for 5gh radio"
+ high-density rx-sop threshold low
+ rate RATE_12M mandatory
+ rate RATE_24M mandatory
+ rate RATE_6M mandatory
+ tx-power v1 threshold -60
+ no shutdown
+ap dot11 5ghz rf-profile High_Client_Density_rf_5gh
+ description "pre configured High Client Density rfprofile for 5gh radio"
+ high-density rx-sop threshold medium
+ rate RATE_12M mandatory
+ rate RATE_24M mandatory
+ rate RATE_6M disable
+ rate RATE_9M disable
+ tx-power min 7
+ tx-power v1 threshold -65
+ no shutdown
+ap dot11 5ghz rf-profile Typical_Client_Density_rf_5gh
+ description "pre configured Typical Density rfprofile for 5gh radio"
+ rate RATE_12M mandatory
+ rate RATE_24M mandatory
+ rate RATE_6M mandatory
+ no shutdown
+ap dot11 5ghz rate RATE_12M mandatory
+ap dot11 5ghz rate RATE_24M mandatory
+ap dot11 5ghz rate RATE_6M mandatory
+ap tri-radio
+ap tag-source-priority 2 source filter
+ap tag-source-priority 3 source ap
+ap profile default-ap-profile
+ capwap pmtu ipv4 1000
+ capwap retransmit count 8
+ capwap retransmit interval 5
+ description "default ap profile"
+ mgmtuser username admin password 0 Cisco123 secret 0 Cisco123
+ap auth-list ap-cert-policy allow-mic-ap
+ap auth-list ap-cert-policy mac-address 380e.4dbf.99dc policy-type mic
+ap auth-list ap-cert-policy mac-address 7069.5a71.4080 policy-type mic
+end
+
